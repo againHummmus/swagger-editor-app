@@ -1,0 +1,32 @@
+{
+  "metadata": {
+    "title": "Swagger Editor",
+    "description": "Создавайте, редактируйте и документируйте свои OpenAPI-спецификации."
+  },
+  "header": {
+    "logoAlt": "Swagger Editor",
+    "about": "О проекте",
+    "signIn": "Войти",
+    "signUp": "Регистрация",
+    "history": "История",
+    "signOut": "Выйти",
+    "changeLanguage": "Сменить язык",
+    "toggleMenu": "Открыть меню"
+  },
+  "footer": {
+    "copyright": "© 2026 Swagger Editor App.",
+    "about": "О проекте"
+  },
+  "home": {
+    "placeholder": "Редактор Swagger"
+  },
+  "about": {
+    "title": "О проекте"
+  },
+  "signIn": {
+    "title": "Войти"
+  },
+  "signUp": {
+    "title": "Регистрация"
+  }
+}
