@@ -1,0 +1,32 @@
+{
+  "metadata": {
+    "title": "Swagger Editor",
+    "description": "Design, edit, and document your OpenAPI specifications."
+  },
+  "header": {
+    "logoAlt": "Swagger Editor",
+    "about": "About",
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "history": "History",
+    "signOut": "Sign Out",
+    "changeLanguage": "Change language",
+    "toggleMenu": "Toggle menu"
+  },
+  "footer": {
+    "copyright": "© 2026 Swagger Editor App.",
+    "about": "About"
+  },
+  "home": {
+    "placeholder": "Home - editor"
+  },
+  "about": {
+    "title": "About"
+  },
+  "signIn": {
+    "title": "Sign In"
+  },
+  "signUp": {
+    "title": "Sign Up"
+  }
+}

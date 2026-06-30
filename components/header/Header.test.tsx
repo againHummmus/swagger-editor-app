@@ -1,16 +1,35 @@
-import { describe, it, expect } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import type { MouseEventHandler, ReactNode } from "react";
+import { describe, it, expect, vi } from "vitest";
+import { screen, fireEvent } from "@testing-library/react";
+import { renderWithIntl } from "@test/intl";
 import Header from "./Header";
 
+vi.mock("@/i18n/navigation", () => ({
+  Link: ({
+    href,
+    onClick,
+    children,
+  }: {
+    href: string;
+    onClick?: MouseEventHandler;
+    children: ReactNode;
+  }) => (
+    <a href={href} onClick={onClick}>
+      {children}
+    </a>
+  ),
+  usePathname: () => "/",
+}));
+
 describe("Header", () => {
-  it("renders the brand name linking home", () => {
-    render(<Header />);
+  it("renders the brand logo linking home", () => {
+    renderWithIntl(<Header />);
     const brand = screen.getByRole("link", { name: /swagger editor/i });
     expect(brand).toHaveAttribute("href", "/");
   });
 
   it("renders navigation links to the main routes", () => {
-    render(<Header />);
+    renderWithIntl(<Header />);
     expect(screen.getByRole("link", { name: "About" })).toHaveAttribute(
       "href",
       "/about",
@@ -25,15 +44,17 @@ describe("Header", () => {
     );
   });
 
-  it("renders an accessible language switcher button", () => {
-    render(<Header />);
+  it("renders an accessible language switcher", () => {
+    renderWithIntl(<Header />);
     expect(
-      screen.getByRole("button", { name: /change language/i }),
+      screen.getByRole("group", { name: /change language/i }),
     ).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "EN" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "RU" })).toBeInTheDocument();
   });
 
   it("toggles the mobile menu when the menu button is clicked", () => {
-    render(<Header />);
+    renderWithIntl(<Header />);
     const toggle = screen.getByRole("button", { name: /toggle menu/i });
 
     expect(toggle).toHaveAttribute("aria-expanded", "false");
@@ -48,7 +69,7 @@ describe("Header", () => {
   it.each(["About", "Sign In", "Sign Up"])(
     "closes the mobile menu when the %s link inside it is clicked",
     (name) => {
-      render(<Header />);
+      renderWithIntl(<Header />);
       const toggle = screen.getByRole("button", { name: /toggle menu/i });
 
       fireEvent.click(toggle);
