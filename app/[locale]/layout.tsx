@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "../globals.css";
-import Header from "@/components/header/Header";
-import Footer from "@/components/footer/Footer";
+import "@/app/globals.css";
+import Header from "@components/header/Header";
+import Footer from "@components/footer/Footer";
 import NextTopLoader from "nextjs-toploader";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import {
@@ -10,8 +10,8 @@ import {
   getMessages,
   getTranslations,
 } from "next-intl/server";
-import { routing } from "@/i18n/routing";
-import { ensureLocale } from "@/i18n/getValidatedLocale";
+import { routing } from "@i18n/routing";
+import { ensureLocale } from "@i18n/getValidatedLocale";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

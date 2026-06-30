@@ -1,5 +1,5 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { ensureLocale } from "@/i18n/getValidatedLocale";
+import { ensureLocale } from "@i18n/getValidatedLocale";
 
 export default async function Home({
   params,

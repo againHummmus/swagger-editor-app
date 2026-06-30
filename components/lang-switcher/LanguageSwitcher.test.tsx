@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { describe, it, expect, vi } from "vitest";
 import { screen } from "@testing-library/react";
-import { renderWithIntl } from "../../test/intl";
+import { renderWithIntl } from "@test/intl";
 import LanguageSwitcher from "./LanguageSwitcher";
 
 vi.mock("@/i18n/navigation", () => ({

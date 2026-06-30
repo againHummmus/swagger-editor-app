@@ -4,8 +4,8 @@ import Image from "next/image";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
-import LanguageSwitcher from "@/components/lang-switcher/LanguageSwitcher";
+import { Link } from "@i18n/navigation";
+import LanguageSwitcher from "@components/lang-switcher/LanguageSwitcher";
 
 export default function Header() {
   const t = useTranslations("header");

@@ -2,8 +2,8 @@
 
 import { useLocale, useTranslations } from "next-intl";
 import { Globe } from "lucide-react";
-import { Link, usePathname } from "@/i18n/navigation";
-import { routing } from "@/i18n/routing";
+import { Link, usePathname } from "@i18n/navigation";
+import { routing } from "@i18n/routing";
 
 export default function LanguageSwitcher() {
   const locale = useLocale();

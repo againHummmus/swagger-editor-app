@@ -1,7 +1,7 @@
 import type { MouseEventHandler, ReactNode } from "react";
 import { describe, it, expect, vi } from "vitest";
 import { screen, fireEvent } from "@testing-library/react";
-import { renderWithIntl } from "../../test/intl";
+import { renderWithIntl } from "@test/intl";
 import Header from "./Header";
 
 vi.mock("@/i18n/navigation", () => ({
