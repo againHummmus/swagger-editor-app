@@ -8,7 +8,6 @@ export default async function Home({
 }) {
   const { locale } = await params;
 
-  console.log(locale)
   setRequestLocale(ensureLocale(locale));
   const t = await getTranslations("home");
 
