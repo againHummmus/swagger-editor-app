@@ -3,7 +3,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { renderWithIntl } from '@test/intl';
 import SignInPage from './page';
 
-const mockGetSession = vi.fn();
+const mockGetUser = vi.fn();
 
 vi.mock('next-intl/server', () => ({
   getTranslations: async () => (key: string) => key,
@@ -12,7 +12,7 @@ vi.mock('next-intl/server', () => ({
 
 vi.mock('@utils/supabase/server', () => ({
   createClient: async () => ({
-    auth: { getSession: mockGetSession },
+    auth: { getUser: mockGetUser },
   }),
 }));
 
@@ -28,7 +28,7 @@ vi.mock('@i18n/navigation', () => ({
 
 describe('Sign in page', () => {
   beforeEach(() => {
-    mockGetSession.mockResolvedValue({ data: { session: null } });
+    mockGetUser.mockResolvedValue({ data: { user: null } });
   });
 
   it('renders the form when not authenticated', async () => {
@@ -38,8 +38,8 @@ describe('Sign in page', () => {
   });
 
   it('redirects to home when authenticated', async () => {
-    mockGetSession.mockResolvedValue({
-      data: { session: { user: { id: 'test' } } },
+    mockGetUser.mockResolvedValue({
+      data: { user: { id: 'test' } },
     });
 
     await expect(

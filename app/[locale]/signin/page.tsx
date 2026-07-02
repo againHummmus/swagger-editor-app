@@ -14,9 +14,9 @@ export default async function SignInPage({
 
   const supabase = await createClient();
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
-  if (session) {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (user) {
     redirect({ href: '/', locale: ensureLocale(locale) });
   }
 

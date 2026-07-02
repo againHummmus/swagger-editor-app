@@ -59,8 +59,10 @@ export default async function LocaleLayout({
   const messages = await getMessages();
 
   const supabase = await createClient();
-  const { data: { session } } = await supabase.auth.getSession();
-  const isAuthenticated = !!session;
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  const isAuthenticated = !!user;
 
   return (
     <html
