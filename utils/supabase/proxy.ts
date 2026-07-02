@@ -8,10 +8,7 @@ export async function updateSession(
   request: NextRequest,
   handleI18nRouting: I18nHandler
 ) {
-  const isAuthRoute = request.nextUrl.pathname.startsWith('/auth/');
-  const response = isAuthRoute
-    ? NextResponse.next()
-    : handleI18nRouting(request);
+  const response = handleI18nRouting(request);
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,

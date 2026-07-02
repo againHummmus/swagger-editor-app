@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Link } from '@i18n/navigation';
+import { signOut } from '@/app/actions/auth';
 import LanguageSwitcher from '@components/lang-switcher/LanguageSwitcher';
 
 export default function Header({
@@ -49,12 +50,14 @@ export default function Header({
                 >
                   {t('history')}
                 </Link>
-                <a
-                  href="/auth/signout"
-                  className="bg-foreground text-surface hover:bg-foreground-hover hidden rounded-lg px-4 py-2 text-base font-medium transition-colors sm:flex"
-                >
-                  {t('signOut')}
-                </a>
+                <form action={signOut}>
+                  <button
+                    type="submit"
+                    className="bg-foreground text-surface hover:bg-foreground-hover hidden cursor-pointer rounded-lg px-4 py-2 text-base font-medium transition-colors sm:flex"
+                  >
+                    {t('signOut')}
+                  </button>
+                </form>
               </>
             ) : (
               <>
@@ -107,13 +110,14 @@ export default function Header({
               >
                 {t('history')}
               </Link>
-              <a
-                href="/auth/signout"
-                onClick={() => setOpen(false)}
-                className="bg-foreground text-surface hover:bg-foreground-hover mt-1 rounded-lg px-4 py-2 text-center text-base font-medium transition-colors"
-              >
-                {t('signOut')}
-              </a>
+              <form action={signOut} onSubmit={() => setOpen(false)}>
+                <button
+                  type="submit"
+                  className="bg-foreground text-surface hover:bg-foreground-hover mt-1 w-full cursor-pointer rounded-lg px-4 py-2 text-center text-base font-medium transition-colors"
+                >
+                  {t('signOut')}
+                </button>
+              </form>
             </>
           ) : (
             <>

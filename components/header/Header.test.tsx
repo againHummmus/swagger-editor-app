@@ -4,6 +4,10 @@ import { screen, fireEvent } from '@testing-library/react';
 import { renderWithIntl } from '@test/intl';
 import Header from './Header';
 
+vi.mock('@/app/actions/auth', () => ({
+  signOut: vi.fn(),
+}));
+
 vi.mock('@/i18n/navigation', () => ({
   Link: ({
     href,
@@ -98,7 +102,7 @@ describe('Header', () => {
         screen.queryByRole('link', { name: 'History' })
       ).not.toBeInTheDocument();
       expect(
-        screen.queryByRole('link', { name: 'Sign Out' })
+        screen.queryByRole('button', { name: 'Sign Out' })
       ).not.toBeInTheDocument();
     });
 
@@ -108,10 +112,9 @@ describe('Header', () => {
         'href',
         '/history'
       );
-      expect(screen.getByRole('link', { name: 'Sign Out' })).toHaveAttribute(
-        'href',
-        '/auth/signout'
-      );
+      expect(
+        screen.getByRole('button', { name: 'Sign Out' })
+      ).toBeInTheDocument();
       expect(
         screen.queryByRole('link', { name: 'Sign In' })
       ).not.toBeInTheDocument();
