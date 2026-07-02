@@ -7,7 +7,7 @@ import { useTranslations } from "next-intl";
 import { Link } from "@i18n/navigation";
 import LanguageSwitcher from "@components/lang-switcher/LanguageSwitcher";
 
-export default function Header() {
+export default function Header({ isAuthenticated = false }: { isAuthenticated?: boolean }) {
   const t = useTranslations("header");
   const [open, setOpen] = useState(false);
 
@@ -37,18 +37,37 @@ export default function Header() {
           </Link>
           <div className="flex items-center gap-5">
             <LanguageSwitcher />
-            <Link
-              href="/signin"
-              className="hidden sm:flex text-base font-medium text-foreground transition-colors hover:text-muted-hover"
-            >
-              {t("signIn")}
-            </Link>
-            <Link
-              href="/signup"
-              className="hidden sm:flex rounded-lg bg-foreground px-4 py-2 text-base font-medium text-surface transition-colors hover:bg-foreground-hover"
-            >
-              {t("signUp")}
-            </Link>
+            {isAuthenticated ? (
+              <>
+                <Link
+                  href="/history"
+                  className="hidden sm:flex text-base font-medium text-foreground transition-colors hover:text-muted-hover"
+                >
+                  {t("history")}
+                </Link>
+                <Link
+                  href="/signout"
+                  className="hidden sm:flex rounded-lg bg-foreground px-4 py-2 text-base font-medium text-surface transition-colors hover:bg-foreground-hover"
+                >
+                  {t("signOut")}
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link
+                  href="/signin"
+                  className="hidden sm:flex text-base font-medium text-foreground transition-colors hover:text-muted-hover"
+                >
+                  {t("signIn")}
+                </Link>
+                <Link
+                  href="/signup"
+                  className="hidden sm:flex rounded-lg bg-foreground px-4 py-2 text-base font-medium text-surface transition-colors hover:bg-foreground-hover"
+                >
+                  {t("signUp")}
+                </Link>
+              </>
+            )}
             <button
               type="button"
               aria-label={t("toggleMenu")}
@@ -75,20 +94,41 @@ export default function Header() {
           >
             {t("about")}
           </Link>
-          <Link
-            href="/signin"
-            onClick={() => setOpen(false)}
-            className="mt-1 rounded-lg border border-foreground/30 px-4 py-2 text-center text-base font-medium transition-colors hover:bg-foreground-hover/5"
-          >
-            {t("signIn")}
-          </Link>
-          <Link
-            href="/signup"
-            onClick={() => setOpen(false)}
-            className="mt-1 rounded-lg bg-foreground px-4 py-2 text-center text-base font-medium text-surface transition-colors hover:bg-foreground-hover"
-          >
-            {t("signUp")}
-          </Link>
+          {isAuthenticated ? (
+            <>
+              <Link
+                href="/history"
+                onClick={() => setOpen(false)}
+                className="mt-1 rounded-lg border border-foreground/30 px-4 py-2 text-center text-base font-medium transition-colors hover:bg-foreground-hover/5"
+              >
+                {t("history")}
+              </Link>
+              <Link
+                href="/signout"
+                onClick={() => setOpen(false)}
+                className="mt-1 rounded-lg bg-foreground px-4 py-2 text-center text-base font-medium text-surface transition-colors hover:bg-foreground-hover"
+              >
+                {t("signOut")}
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link
+                href="/signin"
+                onClick={() => setOpen(false)}
+                className="mt-1 rounded-lg border border-foreground/30 px-4 py-2 text-center text-base font-medium transition-colors hover:bg-foreground-hover/5"
+              >
+                {t("signIn")}
+              </Link>
+              <Link
+                href="/signup"
+                onClick={() => setOpen(false)}
+                className="mt-1 rounded-lg bg-foreground px-4 py-2 text-center text-base font-medium text-surface transition-colors hover:bg-foreground-hover"
+              >
+                {t("signUp")}
+              </Link>
+            </>
+          )}
         </nav>
       )}
     </header>

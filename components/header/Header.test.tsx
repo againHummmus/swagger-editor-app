@@ -82,4 +82,72 @@ describe("Header", () => {
       expect(screen.getAllByRole("link", { name })).toHaveLength(1);
     },
   );
+
+  describe("auth states", () => {
+    it("renders Sign In and Sign Up when not authenticated", () => {
+      renderWithIntl(<Header />);
+      expect(screen.getByRole("link", { name: "Sign In" })).toHaveAttribute(
+        "href",
+        "/signin",
+      );
+      expect(screen.getByRole("link", { name: "Sign Up" })).toHaveAttribute(
+        "href",
+        "/signup",
+      );
+      expect(
+        screen.queryByRole("link", { name: "History" }),
+      ).not.toBeInTheDocument();
+      expect(
+        screen.queryByRole("link", { name: "Sign Out" }),
+      ).not.toBeInTheDocument();
+    });
+
+    it("renders History and Sign Out when authenticated", () => {
+      renderWithIntl(<Header isAuthenticated />);
+      expect(screen.getByRole("link", { name: "History" })).toHaveAttribute(
+        "href",
+        "/history",
+      );
+      expect(screen.getByRole("link", { name: "Sign Out" })).toHaveAttribute(
+        "href",
+        "/signout",
+      );
+      expect(
+        screen.queryByRole("link", { name: "Sign In" }),
+      ).not.toBeInTheDocument();
+      expect(
+        screen.queryByRole("link", { name: "Sign Up" }),
+      ).not.toBeInTheDocument();
+    });
+
+    it("renders About link when not authenticated", () => {
+      renderWithIntl(<Header />);
+      expect(screen.getByRole("link", { name: "About" })).toHaveAttribute(
+        "href",
+        "/about",
+      );
+    });
+
+    it("renders About link when authenticated", () => {
+      renderWithIntl(<Header isAuthenticated />);
+      expect(screen.getByRole("link", { name: "About" })).toHaveAttribute(
+        "href",
+        "/about",
+      );
+    });
+
+    it("renders language switcher when not authenticated", () => {
+      renderWithIntl(<Header />);
+      expect(
+        screen.getByRole("group", { name: /change language/i }),
+      ).toBeInTheDocument();
+    });
+
+    it("renders language switcher when authenticated", () => {
+      renderWithIntl(<Header isAuthenticated />);
+      expect(
+        screen.getByRole("group", { name: /change language/i }),
+      ).toBeInTheDocument();
+    });
+  });
 });
