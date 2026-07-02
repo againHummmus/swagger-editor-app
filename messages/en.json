@@ -24,9 +24,43 @@
     "title": "About"
   },
   "signIn": {
-    "title": "Sign In"
+    "title": "Sign In",
+    "emailLabel": "Email",
+    "emailPlaceholder": "you@example.com",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "submit": "Sign In",
+    "serverError": "Invalid email or password",
+    "validation": {
+      "emailRequired": "Email is required",
+      "emailInvalid": "Enter a valid email address",
+      "passwordRequired": "Password is required",
+      "passwordMinLength": "At least 8 characters",
+      "passwordLetter": "Must contain at least one letter",
+      "passwordDigit": "Must contain at least one digit",
+      "passwordSpecial": "Must contain at least one special character"
+    }
   },
   "signUp": {
-    "title": "Sign Up"
+    "title": "Sign Up",
+    "emailLabel": "Email",
+    "emailPlaceholder": "you@example.com",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Create a password",
+    "confirmLabel": "Confirm Password",
+    "confirmPlaceholder": "Repeat your password",
+    "submit": "Create Account",
+    "serverError": "An account with this email already exists",
+    "validation": {
+      "emailRequired": "Email is required",
+      "emailInvalid": "Enter a valid email address",
+      "passwordRequired": "Password is required",
+      "passwordMinLength": "At least 8 characters",
+      "passwordLetter": "Must contain at least one letter",
+      "passwordDigit": "Must contain at least one digit",
+      "passwordSpecial": "Must contain at least one special character",
+      "confirmRequired": "Please confirm your password",
+      "confirmMismatch": "Passwords do not match"
+    }
   }
 }

@@ -12,6 +12,7 @@ import {
 } from "next-intl/server";
 import { routing } from "@i18n/routing";
 import { ensureLocale } from "@i18n/getValidatedLocale";
+import { createClient } from "@utils/supabase/server";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -57,6 +58,12 @@ export default async function LocaleLayout({
   setRequestLocale(validLocale);
   const messages = await getMessages();
 
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  const isAuthenticated = !!user;
+
   return (
     <html
       lang={validLocale}
@@ -65,7 +72,7 @@ export default async function LocaleLayout({
       <body className="min-h-full flex flex-col bg-surface text-foreground">
         <NextIntlClientProvider messages={messages} locale={validLocale}>
           <NextTopLoader color="#85EA2D" showSpinner={false} />
-          <Header />
+          <Header isAuthenticated={isAuthenticated} />
           <main className="flex flex-1 flex-col">{children}</main>
           <Footer />
         </NextIntlClientProvider>
