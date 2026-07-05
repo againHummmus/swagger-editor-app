@@ -18,10 +18,18 @@ export type EndpointParam = {
   type?: string;
 };
 
+export type SchemaField = {
+  name: string;
+  type?: string;
+  required: boolean;
+  description?: string;
+};
+
 export type ResponseDetail = {
   status: string;
   description?: string;
   example?: unknown;
+  schemaFields?: SchemaField[];
 };
 
 export type Endpoint = {
@@ -31,5 +39,6 @@ export type Endpoint = {
   parameters: EndpointParam[];
   hasBody: boolean;
   requestBodyExample?: unknown;
+  requestBodyFields?: SchemaField[];
   responses: ResponseDetail[];
 };

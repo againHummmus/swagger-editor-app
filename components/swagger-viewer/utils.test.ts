@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { getBaseUrl, getEndpointGroups, buildCurl } from "./utils";
+import { getBaseUrl, getEndpointGroups, buildCurl, groupParamsByLocation } from "./utils";
 import type { ApiDocument, Endpoint, EndpointParam } from "./types";
 
 describe("getBaseUrl", () => {
@@ -29,7 +29,11 @@ describe("getEndpointGroups", () => {
             responses: {
               "200": {
                 description: "OK",
-                schema: { type: "object", properties: { name: { type: "string" } } },
+                schema: {
+                  type: "object",
+                  required: ["name"],
+                  properties: { name: { type: "string", description: "Pet name" } },
+                },
               },
             },
           },
@@ -37,7 +41,11 @@ describe("getEndpointGroups", () => {
             requestBody: {
               content: {
                 "application/json": {
-                  schema: { type: "object", properties: { name: { type: "string" } } },
+                  schema: {
+                    type: "object",
+                    required: ["name"],
+                    properties: { name: { type: "string", description: "Pet name" } },
+                  },
                 },
               },
             },
@@ -56,9 +64,15 @@ describe("getEndpointGroups", () => {
 
     expect(endpoints[0].parameters).toMatchObject([{ name: "id", in: "path", required: true }]);
     expect(endpoints[0].responses[0].example).toEqual({ name: "string" });
+    expect(endpoints[0].responses[0].schemaFields).toEqual([
+      { name: "name", type: "string", required: true, description: "Pet name" },
+    ]);
 
     expect(endpoints[1].hasBody).toBe(true);
     expect(endpoints[1].requestBodyExample).toEqual({ name: "string" });
+    expect(endpoints[1].requestBodyFields).toEqual([
+      { name: "name", type: "string", required: true, description: "Pet name" },
+    ]);
   });
 
   it("detects Swagger 2 body parameters", () => {
@@ -80,6 +94,26 @@ describe("getEndpointGroups", () => {
   it("skips paths with no recognized http methods", () => {
     const api: ApiDocument = { paths: { "/x": { parameters: [] } } };
     expect(getEndpointGroups(api)).toEqual([]);
+  });
+});
+
+describe("groupParamsByLocation", () => {
+  it("groups params by location, in a fixed order, skipping empty groups", () => {
+    const parameters: EndpointParam[] = [
+      { name: "verbose", in: "query", required: false, type: "boolean" },
+      { name: "id", in: "path", required: true, type: "integer" },
+      { name: "X-Token", in: "header", required: true, type: "string" },
+    ];
+
+    expect(groupParamsByLocation(parameters)).toEqual({
+      path: [{ name: "id", in: "path", required: true, type: "integer" }],
+      query: [{ name: "verbose", in: "query", required: false, type: "boolean" }],
+      header: [{ name: "X-Token", in: "header", required: true, type: "string" }],
+    });
+  });
+
+  it("returns an empty object when there are no parameters", () => {
+    expect(groupParamsByLocation([])).toEqual({});
   });
 });
 

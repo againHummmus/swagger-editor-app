@@ -1,7 +1,7 @@
-import type { HttpMethod, ParamLocation, EndpointParam, Endpoint, ApiDocument } from "./types";
+import type { HttpMethod, ParamLocation, EndpointParam, Endpoint, ApiDocument, SchemaField } from "./types";
 
 const HTTP_METHODS: HttpMethod[] = ["get", "post", "put", "delete", "patch", "options", "head"];
-const PARAM_LOCATIONS = new Set<string>(["path", "query", "header", "cookie", "formData"]);
+const PARAM_LOCATIONS = new Set<ParamLocation>(["path", "query", "header", "cookie", "formData"]);
 const SCALAR_EXAMPLES: Record<string, unknown> = { integer: 0, number: 0, boolean: true };
 
 type Schema = Record<string, unknown>;
@@ -40,13 +40,39 @@ function paramType({ schema, type }: Param): string | undefined {
   return Array.isArray(schemaType) ? schemaType.join(" | ") : typeof schemaType === "string" ? schemaType : type;
 }
 
+function fieldType(schema: Schema): string | undefined {
+  const type = schema.type as string | undefined;
+  if (type === "array") {
+    const itemsType = (schema.items as Schema | undefined)?.type as string | undefined;
+    return `array<${itemsType ?? "object"}>`;
+  }
+  return type;
+}
+
+function schemaFields(schema: unknown): SchemaField[] {
+  if (typeof schema !== "object" || schema === null) return [];
+  const node = schema as Schema;
+  const properties = (node.properties as Schema | undefined) ?? {};
+  const required = new Set((node.required as string[] | undefined) ?? []);
+
+  return Object.entries(properties).map(([name, value]) => {
+    const prop = value as Schema;
+    return {
+      name,
+      type: fieldType(prop),
+      required: required.has(name),
+      description: prop.description as string | undefined,
+    };
+  });
+}
+
 function toEndpoint(method: HttpMethod, path: string, item: PathItem, operation: Operation): Endpoint {
   const parameters: EndpointParam[] = [];
   let hasBody = Boolean(operation.requestBody);
   let bodySchema: unknown = Object.values(operation.requestBody?.content ?? {})[0]?.schema;
 
   for (const param of [...(item.parameters ?? []), ...(operation.parameters ?? [])]) {
-    if (PARAM_LOCATIONS.has(param.in)) {
+    if (PARAM_LOCATIONS.has(param.in as ParamLocation)) {
       parameters.push({
         name: param.name,
         in: param.in as ParamLocation,
@@ -67,11 +93,16 @@ function toEndpoint(method: HttpMethod, path: string, item: PathItem, operation:
     parameters,
     hasBody,
     requestBodyExample: generateExample(bodySchema),
-    responses: Object.entries(operation.responses ?? {}).map(([status, response]) => ({
-      status,
-      description: response.description,
-      example: generateExample(response.schema ?? Object.values(response.content ?? {})[0]?.schema),
-    })),
+    requestBodyFields: schemaFields(bodySchema),
+    responses: Object.entries(operation.responses ?? {}).map(([status, response]) => {
+      const responseSchema = response.schema ?? Object.values(response.content ?? {})[0]?.schema;
+      return {
+        status,
+        description: response.description,
+        example: generateExample(responseSchema),
+        schemaFields: schemaFields(responseSchema),
+      };
+    }),
   };
 }
 
@@ -82,6 +113,17 @@ export function getBaseUrl(api: ApiDocument): string {
     return `${scheme}://${api.host}${api.basePath ?? ""}`.replace(/\/$/, "");
   }
   return "";
+}
+
+export function groupParamsByLocation(parameters: EndpointParam[]): Partial<Record<ParamLocation, EndpointParam[]>> {
+  const groups: Partial<Record<ParamLocation, EndpointParam[]>> = {};
+
+  for (const location of PARAM_LOCATIONS) {
+    const params = parameters.filter((param) => param.in === location);
+    if (params.length > 0) groups[location] = params;
+  }
+
+  return groups;
 }
 
 export function getEndpointGroups(api: ApiDocument): [string, Endpoint[]][] {
@@ -109,21 +151,22 @@ export function buildCurl(
   body?: string
 ): string {
   const value = (name: string) => values[name] ?? `<${name}>`;
+  const {
+    path: pathParams = [],
+    query: queryParams = [],
+    header: headerParams = [],
+    cookie: cookieParams = [],
+    formData: formDataParams = [],
+  } = groupParamsByLocation(endpoint.parameters);
 
-  const url = endpoint.parameters
-    .filter((param) => param.in === "path")
-    .reduce((url, param) => url.replace(`{${param.name}}`, value(param.name)), `${baseUrl}${endpoint.path}`);
+  const url = pathParams.reduce(
+    (url, param) => url.replace(`{${param.name}}`, value(param.name)),
+    `${baseUrl}${endpoint.path}`
+  );
 
-  const query = endpoint.parameters
-    .filter((param) => param.in === "query")
-    .map((param) => `${param.name}=${value(param.name)}`)
-    .join("&");
-
-  const headerParts = endpoint.parameters
-    .filter((param) => param.in === "header")
-    .map((param) => `-H '${param.name}: ${value(param.name)}'`);
-
-  const formDataParams = endpoint.parameters.filter((param) => param.in === "formData");
+  const query = queryParams.map((param) => `${param.name}=${value(param.name)}`).join("&");
+  const headerParts = headerParams.map((param) => `-H '${param.name}: ${value(param.name)}'`);
+  const cookieParts = cookieParams.map((param) => `${param.name}=${value(param.name)}`).join("; ");
   const formDataParts = formDataParams.map((param) => {
     const fileValue = param.type === "file" ? `@${values[param.name] ?? `<path/to/${param.name}>`}` : value(param.name);
     return `-F '${param.name}=${fileValue}'`;
@@ -132,6 +175,7 @@ export function buildCurl(
   const parts = [
     `curl -X ${endpoint.method.toUpperCase()} '${url}${query ? `?${query}` : ""}'`,
     ...headerParts,
+    ...(cookieParts ? [`-b '${cookieParts}'`] : []),
     ...formDataParts,
   ];
 

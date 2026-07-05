@@ -1,6 +1,7 @@
 import SwaggerEditor from '@/components/swagger-editor/SwaggerEditor';
 import SwaggerViewer from '@/components/swagger-viewer/SwaggerViewer';
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import SwaggerParser from "@apidevtools/swagger-parser";
 import { ensureLocale } from "@i18n/getValidatedLocale";
 import { getSavedSchema } from '@/app/actions/schema';
 
