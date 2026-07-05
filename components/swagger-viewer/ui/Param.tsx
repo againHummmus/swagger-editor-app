@@ -7,17 +7,21 @@ function inputType(param: EndpointParam): React.HTMLInputTypeAttribute {
   return 'text';
 }
 
-export default function Param({ param, value, onChange, isTryOut }: {
+export default function Param({ param, value, onChange, onFileChange }: {
   param: EndpointParam;
   value?: string;
   onChange?: (v: string) => void;
-  isTryOut: boolean;
+  onFileChange?: (file: File | null) => void;
 }) {
   const type = inputType(param);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (type === 'checkbox') onChange?.(e.target.checked ? 'true' : 'false');
-    else if (type === 'file') onChange?.(e.target.files?.[0]?.name ?? '');
+    else if (type === 'file') {
+      const file = e.target.files?.[0] ?? null;
+      onFileChange?.(file);
+      onChange?.(file?.name ?? '');
+    }
     else onChange?.(e.target.value);
   };
 
@@ -31,8 +35,8 @@ export default function Param({ param, value, onChange, isTryOut }: {
         </p>
         <span className="text-xs text-muted">{param.in}</span>
       </div>
-      {isTryOut && (
-        type === 'checkbox' ? (
+      
+        {type === 'checkbox' ? (
           <input
             type="checkbox"
             checked={value === 'true'}
@@ -53,11 +57,7 @@ export default function Param({ param, value, onChange, isTryOut }: {
             onChange={handleChange}
             className="min-w-0 flex-1 rounded-md border border-border bg-surface px-3 py-1.5 outline-none placeholder:text-muted/60 focus:border-foreground/30"
           />
-        )
-      )}
-      {!isTryOut && param.description && (
-        <span className="text-xs text-muted">{param.description}</span>
-      )}
+        )}
     </li>
   );
 }
