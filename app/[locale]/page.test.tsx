@@ -2,6 +2,10 @@ import { describe, it, expect, vi } from "vitest";
 import { render } from "@testing-library/react";
 import Home from "./page";
 
+vi.mock('@/app/actions/schema', () => ({
+  getSavedSchema: vi.fn().mockResolvedValue(null),
+}));
+
 vi.mock("next-intl/server", () => ({
   getTranslations: async () => (key: string) => key,
   setRequestLocale: () => {},
