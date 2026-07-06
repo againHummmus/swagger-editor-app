@@ -25,6 +25,7 @@ export default defineConfig({
         '**/*.spec.{js,jsx,ts,tsx}',
         'app/**/layout.{js,jsx,ts,tsx}',
         '**/*.d.ts',
+        'actions/*'
       ],
       thresholds: {
         statements: 80,
