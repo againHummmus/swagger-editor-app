@@ -16,6 +16,7 @@ export type EndpointParam = {
   required: boolean;
   description?: string;
   type?: string;
+  format?: string
 };
 
 export type SchemaField = {

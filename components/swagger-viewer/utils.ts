@@ -5,7 +5,7 @@ const PARAM_LOCATIONS = new Set<ParamLocation>(["path", "query", "header", "cook
 const SCALAR_EXAMPLES: Record<string, unknown> = { integer: 0, number: 0, boolean: true };
 
 type Schema = Record<string, unknown>;
-type Param = { name: string; in: string; required?: boolean; description?: string; schema?: Schema; type?: string };
+type Param = { name: string; in: string; required?: boolean; description?: string; schema?: Schema; type?: string, format?: string };
 type Response = { description?: string; schema?: unknown; content?: Record<string, { schema?: unknown }> };
 type Operation = {
   summary?: string;
@@ -66,18 +66,19 @@ function schemaFields(schema: unknown): SchemaField[] {
   });
 }
 
-function toEndpoint(method: HttpMethod, path: string, item: PathItem, operation: Operation): Endpoint {
+function buildEndpoint(method: HttpMethod, path: string, operation: Operation, pathParameters?: Param[] ): Endpoint {
   const parameters: EndpointParam[] = [];
   let hasBody = Boolean(operation.requestBody);
   let bodySchema: unknown = Object.values(operation.requestBody?.content ?? {})[0]?.schema;
 
-  for (const param of [...(item.parameters ?? []), ...(operation.parameters ?? [])]) {
+  for (const param of [...(pathParameters ?? []), ...(operation.parameters ?? [])]) {
     if (PARAM_LOCATIONS.has(param.in as ParamLocation)) {
       parameters.push({
         name: param.name,
         in: param.in as ParamLocation,
         required: Boolean(param.required),
         description: param.description,
+        format: param.format,
         type: paramType(param),
       });
     } else if (param.in === "body") {
@@ -107,8 +108,8 @@ function toEndpoint(method: HttpMethod, path: string, item: PathItem, operation:
 }
 
 export function getBaseUrl(api: ApiDocument): string {
-  if ("servers" in api && api.servers?.length) return api.servers[0].url.replace(/\/$/, "");
-  if ("host" in api && api.host) {
+  if (api.servers?.length) return api.servers[0].url.replace(/\/$/, "");
+  if (api.host) {
     const scheme = api.schemes?.[0] ?? "https";
     return `${scheme}://${api.host}${api.basePath ?? ""}`.replace(/\/$/, "");
   }
@@ -129,13 +130,13 @@ export function groupParamsByLocation(parameters: EndpointParam[]): Partial<Reco
 export function getEndpointGroups(api: ApiDocument): [string, Endpoint[]][] {
   const groups: [string, Endpoint[]][] = [];
 
-  for (const [path, raw] of Object.entries(api.paths ?? {})) {
-    const item = raw as PathItem | undefined;
+  for (const [path, methods] of Object.entries(api.paths ?? {})) {
+    const item = methods as PathItem | undefined;
     if (!item) continue;
 
     const endpoints = HTTP_METHODS.flatMap((method) => {
       const operation = item[method];
-      return operation ? [toEndpoint(method, path, item, operation)] : [];
+      return operation ? [buildEndpoint(method, path, operation, item.parameters)] : [];
     });
 
     if (endpoints.length > 0) groups.push([path, endpoints]);

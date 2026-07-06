@@ -29,6 +29,8 @@ export default function EndpointRow({ endpoint, baseUrl }: { endpoint: Endpoint;
       return { ...prev, [name]: file };
     });
 
+  const paramGroups = Object.entries(groupParamsByLocation(endpoint.parameters));
+
   const sendRequestClient = async () => {
     const res = await sendRequest(
       endpoint,
@@ -53,7 +55,7 @@ export default function EndpointRow({ endpoint, baseUrl }: { endpoint: Endpoint;
       >
         <div className="overflow-hidden">
           <div className="flex flex-col gap-4 border-t border-border p-4">
-            {Object.entries(groupParamsByLocation(endpoint.parameters)).map(
+            {paramGroups.map(
               ([location, params]) => (
                 <div key={location} className="flex flex-col gap-2">
                   <SectionLabel>

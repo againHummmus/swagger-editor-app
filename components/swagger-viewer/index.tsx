@@ -14,7 +14,7 @@ export default function SwaggerViewer({ api }: { api: ApiDocument }) {
   }
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex w-full lg:overflow-auto flex-col gap-6">
       {groups.map(([path, operations]) => (
         <section key={path} className="flex flex-col gap-5">
           <h2 className="border-b border-border px-4 py-2 font-mono text-sm">

@@ -31,7 +31,7 @@ export default function Param({ param, value, onChange, onFileChange }: {
         <p className="font-semibold">
           {param.name}
           {param.required && <span className="text-method-delete">*</span>}
-          {param.type && <span className="font-normal italic text-muted">: {param.type}</span>}
+          {param.type && <span className="font-normal italic text-muted">: {param.type} {param.format && `(${param.format})`}</span>}
         </p>
         <span className="text-xs text-muted">{param.in}</span>
       </div>

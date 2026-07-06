@@ -35,19 +35,19 @@ describe('SwaggerEditor', () => {
   });
 
   it('renders editor, toggle and validate buttons', () => {
-    render(<SwaggerEditor savedSchema={{ content: '', format: 'yaml' }} />);
+    render(<SwaggerEditor onValidated={() => {}} savedSchema={{ content: '', format: 'yaml' }} />);
     expect(screen.getByTestId('monaco-editor')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /convert to/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /validate/i })).toBeInTheDocument();
   });
 
   it('initial format YAML', () => {
-    render(<SwaggerEditor savedSchema={{ content: '', format: 'yaml' }} />);
+    render(<SwaggerEditor onValidated={() => {}} savedSchema={{ content: '', format: 'yaml' }} />);
     expect(screen.getByText('YAML')).toBeInTheDocument();
   });
 
   it('auto-detects YAML', () => {
-    render(<SwaggerEditor savedSchema={{ content: '', format: 'yaml' }} />);
+    render(<SwaggerEditor onValidated={() => {}} savedSchema={{ content: '', format: 'yaml' }} />);
     const editor = screen.getByTestId('monaco-editor');
 
     fireEvent.change(editor, {
@@ -73,7 +73,7 @@ describe('SwaggerEditor', () => {
   });
 
   it('auto-detects JSON', async () => {
-    render(<SwaggerEditor savedSchema={{ content: '', format: 'yaml' }} />);
+    render(<SwaggerEditor onValidated={() => {}} savedSchema={{ content: '', format: 'yaml' }} />);
     const editor = screen.getByTestId('monaco-editor');
 
     fireEvent.change(editor, {
@@ -109,7 +109,7 @@ describe('SwaggerEditor', () => {
   });
 
   it('invalid schema', () => {
-    render(<SwaggerEditor savedSchema={{ content: '', format: 'yaml' }} />);
+    render(<SwaggerEditor onValidated={() => {}} savedSchema={{ content: '', format: 'yaml' }} />);
     const editor = screen.getByTestId('monaco-editor');
 
     fireEvent.change(editor, { target: { value: '{ invalid json' } });
@@ -121,7 +121,7 @@ describe('SwaggerEditor', () => {
   it('valid schema is validated', async () => {
     vi.mocked(SwaggerParser.validate).mockResolvedValueOnce({} as never);
 
-    render(<SwaggerEditor savedSchema={{ content: '', format: 'yaml' }} />);
+    render(<SwaggerEditor onValidated={() => {}} savedSchema={{ content: '', format: 'yaml' }} />);
     const editor = screen.getByTestId('monaco-editor');
     fireEvent.change(editor, {
       target: {
