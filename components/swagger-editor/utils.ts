@@ -64,8 +64,10 @@ export async function parseAndValidate(
       throw new Error('Schema must be a JSON or YAML object');
     }
 
-    await SwaggerParser.validate(structuredClone(obj) as OpenAPI.Document);
-    return { ok: true, api: obj as ApiDocument };
+    const api = await SwaggerParser.validate(structuredClone(obj) as OpenAPI.Document, {
+      dereference: { circular: 'ignore' },
+    });
+    return { ok: true, api: api as ApiDocument };
   } catch (e) {
     return {
       ok: false,

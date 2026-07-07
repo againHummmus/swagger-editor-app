@@ -31,9 +31,11 @@ export default function SwaggerWrapper({
         {validatedApi ? (
           <SwaggerViewer api={validatedApi} />
         ) : (
-          <p className="text-muted">
-            Validate the schema in the editor to see its endpoints.
-          </p>
+          <div className='w-full h-full flex items-center justify-center'>
+            <p className="text-muted">
+              Validate the schema in the editor to see its endpoints.
+            </p>
+          </div>
         )}
       </div>
     </div>

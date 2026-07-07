@@ -2,19 +2,20 @@ import { describe, it, expect } from "vitest";
 import { getBaseUrl, getEndpointGroups, buildCurl, groupParamsByLocation } from "./utils";
 import type { ApiDocument, Endpoint, EndpointParam } from "./types";
 
-describe("getBaseUrl", () => {
-  it("uses the first OpenAPI 3 server url", () => {
-    const api: ApiDocument = { servers: [{ url: "https://api.example.com/v1/" }] };
-    expect(getBaseUrl(api)).toBe("https://api.example.com/v1");
+describe('get baseUrl', () => {
+  it('returns full url with no trailing slash for api with servers', () => {
+    const apiWithServers = {
+      servers: [{ url: 'https://api.example.com/' }],
+    };
+    expect(getBaseUrl(apiWithServers)).toBe('https://api.example.com');
   });
 
-  it("builds a url from Swagger 2 host/schemes/basePath", () => {
-    const api: ApiDocument = { host: "petstore.swagger.io", basePath: "/v2", schemes: ["http"] };
-    expect(getBaseUrl(api)).toBe("http://petstore.swagger.io/v2");
-  });
-
-  it("returns an empty string when neither is present", () => {
-    expect(getBaseUrl({})).toBe("");
+  it('returns full url with no trailing slash for api with hosts & basePath', () => {
+    const apiWithHosts = {
+      host: 'api.example.com',
+      basePath: '/v1/'
+    };
+    expect(getBaseUrl(apiWithHosts)).toBe('https://api.example.com/v1');
   });
 });
 

@@ -7,16 +7,19 @@ import Response from './ui/Response';
 import Curl from './ui/Curl';
 import { groupParamsByLocation } from './utils';
 import type { Endpoint } from './types';
-import sendRequest, { type SendRequestResult } from './actions/sendRequest';
+import { sendRequest, type SendRequestResult } from '@/app/actions/tryItOut';
 
 export default function EndpointRow({ endpoint, baseUrl }: { endpoint: Endpoint; baseUrl: string }) {
+  const hasBody = endpoint.requestBodyExample != null;
+
   const [open, setOpen] = useState(false);
   const [paramValues, setParamValues] = useState<Record<string, string>>({});
   const [fileValues, setFileValues] = useState<Record<string, File>>({});
   const [response, setResponse] = useState<SendRequestResult>()
   const [bodyValue, setBodyValue] = useState(() =>
-    endpoint.requestBodyExample != null ? JSON.stringify(endpoint.requestBodyExample, null, 2) : '{}'
+    hasBody ? JSON.stringify(endpoint.requestBodyExample, null, 2) : '{}'
   );
+  const body = hasBody ? bodyValue : undefined;
 
   const setParam = (name: string, value: string) =>
     setParamValues((prev) => ({ ...prev, [name]: value }));
@@ -36,7 +39,7 @@ export default function EndpointRow({ endpoint, baseUrl }: { endpoint: Endpoint;
       endpoint,
       baseUrl,
       paramValues,
-      endpoint.requestBodyExample != null ? bodyValue : undefined,
+      body,
       fileValues
     )
     setResponse(res)
@@ -76,7 +79,7 @@ export default function EndpointRow({ endpoint, baseUrl }: { endpoint: Endpoint;
               )
             )}
 
-            {endpoint.requestBodyExample != null && (
+            {hasBody && (
               <RequestBody
                 fields={endpoint.requestBodyFields}
                 value={bodyValue}
@@ -100,7 +103,7 @@ export default function EndpointRow({ endpoint, baseUrl }: { endpoint: Endpoint;
                 endpoint={endpoint}
                 baseUrl={baseUrl}
                 values={paramValues}
-                body={endpoint.requestBodyExample != null ? bodyValue : undefined}
+                body={body}
               />
               <button
                 className="py-2 cursor-pointer w-full bg-black text-white rounded-md hover:bg-black/90"

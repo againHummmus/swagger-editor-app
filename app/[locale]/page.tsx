@@ -5,7 +5,7 @@ import {
   parseAndValidate,
   DEFAULT_SCHEMA,
 } from '@/components/swagger-editor/utils';
-import SwaggerWrapper from './SwaggerWrapper';
+import SwaggerWrapper from '@/components/SwaggerWrapper';
 
 export default async function Home({
   params,

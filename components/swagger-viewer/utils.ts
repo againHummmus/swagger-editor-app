@@ -129,8 +129,9 @@ export function groupParamsByLocation(parameters: EndpointParam[]): Partial<Reco
 
 export function getEndpointGroups(api: ApiDocument): [string, Endpoint[]][] {
   const groups: [string, Endpoint[]][] = [];
+  const paths = Object.entries(api.paths ?? {})
 
-  for (const [path, methods] of Object.entries(api.paths ?? {})) {
+  for (const [path, methods] of paths) {
     const item = methods as PathItem | undefined;
     if (!item) continue;
 

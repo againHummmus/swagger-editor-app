@@ -89,7 +89,7 @@ export default function SignInForm() {
       <button
         type="submit"
         disabled={!isValid || isSubmitting}
-        className="bg-foreground text-surface hover:bg-foreground-hover rounded-lg px-4 py-2 text-sm font-medium transition-colors disabled:opacity-50"
+        className="cursor-pointer disabled:cursor-not-allowed bg-foreground text-surface hover:bg-foreground-hover rounded-lg px-4 py-2 text-sm font-medium transition-colors disabled:opacity-50"
       >
         {t('submit')}
       </button>

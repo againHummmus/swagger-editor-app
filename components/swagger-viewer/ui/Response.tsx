@@ -1,5 +1,6 @@
 import type { ResponseDetail } from '../types';
 import CodeBlock from './CodeBlock';
+import SchemaTable from './SchemaTable';
 
 function statusBadgeClass(status: string): string {
   const code = parseInt(status, 10);
@@ -27,6 +28,9 @@ export default function Response({ response, statusText, ok, headers, body }: {
         {response.description && <span className="text-xs font-bold">{response.description}</span>}
         {ok === false && <span className="border border-method-delete rounded-full px-2 text-xs font-semibold text-method-delete">Failed</span>}
       </div>
+      {response.schemaFields && response.schemaFields.length > 0 && (
+        <SchemaTable fields={response.schemaFields} />
+      )}
       {headers && Object.keys(headers).length > 0 && (
         <CodeBlock>{Object.entries(headers).map(([name, value]) => `${name}: ${value}`).join('\n')}</CodeBlock>
       )}
