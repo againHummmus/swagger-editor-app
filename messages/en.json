@@ -13,6 +13,13 @@
     "changeLanguage": "Change language",
     "toggleMenu": "Toggle menu"
   },
+  "serverErrors": {
+    "invalid_credentials": "Invalid email or password",
+    "email_not_confirmed": "Please confirm your email before signing in",
+    "email_address_invalid": "The email address format is invalid",
+    "over_email_send_rate_limit": "Too many registration attempts. Please wait before trying again",
+    "user_repeated_signup": "An account with this email already exists"
+  },
   "footer": {
     "copyright": "© 2026 Swagger Editor App.",
     "about": "About"
@@ -23,6 +30,9 @@
   "about": {
     "title": "About"
   },
+  "popup": {
+    "dismiss": "Dismiss"
+  },
   "signIn": {
     "title": "Sign In",
     "emailLabel": "Email",
@@ -30,7 +40,6 @@
     "passwordLabel": "Password",
     "passwordPlaceholder": "Enter your password",
     "submit": "Sign In",
-    "serverError": "Invalid email or password",
     "validation": {
       "emailRequired": "Email is required",
       "emailInvalid": "Enter a valid email address",
@@ -50,7 +59,7 @@
     "confirmLabel": "Confirm Password",
     "confirmPlaceholder": "Repeat your password",
     "submit": "Create Account",
-    "serverError": "An account with this email already exists",
+    "successMessage": "Account created! Please check your email to confirm your account.",
     "validation": {
       "emailRequired": "Email is required",
       "emailInvalid": "Enter a valid email address",

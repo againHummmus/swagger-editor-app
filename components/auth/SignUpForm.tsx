@@ -6,14 +6,20 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations, useLocale } from 'next-intl';
 import { signUp } from '@/app/actions/auth';
 import { signUpSchema } from '@utils/auth/validation';
+import { useError } from '@components/error/ErrorContext';
+import InfoPopup from '@/components/popup/InfoPopup';
+import { redirect } from '@i18n/navigation';
 import type { z } from 'zod';
 
 type FormData = z.infer<typeof signUpSchema>;
 
 export default function SignUpForm() {
   const t = useTranslations('signUp');
+  const tc = useTranslations('popup');
+  const ts = useTranslations('serverErrors');
   const locale = useLocale();
-  const [serverError, setServerError] = useState<string | null>(null);
+  const { showError } = useError();
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const {
     register,
@@ -25,24 +31,36 @@ export default function SignUpForm() {
   });
 
   const onSubmit = async (data: FormData) => {
-    setServerError(null);
     const result = await signUp({
       email: data.email,
       password: data.password,
       locale,
     });
-    if (result?.error) {
-      setServerError(t(result.error as Parameters<typeof t>[0]));
+    if (result && 'error' in result) {
+      const message = ts.has(result.error as never) ? ts(result.error as never) : result.error;
+      showError(message, t('title'));
+    } else if (result && 'success' in result) {
+      setSuccessMessage(t('successMessage'));
     }
   };
 
+  const handleSuccessClose = () => {
+    setSuccessMessage(null);
+    redirect({ href: '/', locale });
+  };
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-      {serverError && (
-        <p role="alert" className="text-method-delete text-sm">
-          {serverError}
-        </p>
+    <>
+      {successMessage && (
+        <InfoPopup
+          message={successMessage}
+          title={t('title')}
+          variant="success"
+          dismissLabel={tc('dismiss')}
+          onClose={handleSuccessClose}
+        />
       )}
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
 
       <div className="flex flex-col gap-1">
         <label htmlFor="email" className="text-sm font-medium">
@@ -122,5 +140,6 @@ export default function SignUpForm() {
         {t('submit')}
       </button>
     </form>
+    </>
   );
 }
