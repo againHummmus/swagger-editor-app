@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Link } from '@i18n/navigation';
@@ -17,9 +17,22 @@ export default function Header({
 }) {
   const t = useTranslations('header');
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 10);
+    addEventListener('scroll', onScroll, { passive: true });
+    return () => removeEventListener('scroll', onScroll);
+  }, []);
 
   return (
-    <header className="border-border bg-surface sticky top-0 z-40 w-full border-b">
+    <header
+      className={`sticky top-0 z-40 w-full transition-all duration-700 ${
+        scrolled
+          ? 'border-border/30 bg-surface-muted/80 shadow-lg backdrop-blur-md'
+          : 'border-border bg-surface border-b'
+      }`}
+    >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-10 px-4">
         <Link
           href="/"
