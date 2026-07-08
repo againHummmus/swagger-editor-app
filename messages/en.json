@@ -54,6 +54,8 @@
     "title": "Sign Up",
     "emailLabel": "Email",
     "emailPlaceholder": "you@example.com",
+    "userNameLabel": "Name",
+    "userNamePlaceholder": "Your name (optional)",
     "passwordLabel": "Password",
     "passwordPlaceholder": "Create a password",
     "confirmLabel": "Confirm Password",

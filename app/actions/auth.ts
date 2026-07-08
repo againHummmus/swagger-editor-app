@@ -37,11 +37,17 @@ export async function signUp(formData: {
   email: string;
   password: string;
   locale: string;
+  userName?: string;
 }): Promise<{ error: string } | { success: true } | undefined> {
   const supabase = await createClient();
   const { error } = await supabase.auth.signUp({
     email: formData.email,
     password: formData.password,
+    options: {
+      data: {
+        user_name: formData.userName ?? null,
+      },
+    },
   });
 
   if (error) {

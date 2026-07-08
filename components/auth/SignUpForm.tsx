@@ -34,6 +34,7 @@ export default function SignUpForm() {
     const result = await signUp({
       email: data.email,
       password: data.password,
+      userName: data.userName,
       locale,
     });
     if (result && 'error' in result) {
@@ -83,6 +84,20 @@ export default function SignUpForm() {
             ? t(errors.email.message as Parameters<typeof t>[0])
             : ''}
         </p>
+      </div>
+
+      <div className="flex flex-col gap-1">
+        <label htmlFor="userName" className="text-sm font-medium">
+          {t('userNameLabel')}
+        </label>
+        <input
+          id="userName"
+          type="text"
+          autoComplete="name"
+          placeholder={t('userNamePlaceholder')}
+          {...register('userName')}
+          className="border-border bg-surface focus:border-foreground rounded-lg border px-3 py-2 text-sm outline-hidden"
+        />
       </div>
 
       <div className="flex flex-col gap-1">

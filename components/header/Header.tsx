@@ -10,14 +10,16 @@ import LanguageSwitcher from '@components/lang-switcher/LanguageSwitcher';
 
 export default function Header({
   isAuthenticated = false,
+  userDisplay = null,
 }: {
   isAuthenticated?: boolean;
+  userDisplay?: string | null;
 }) {
   const t = useTranslations('header');
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="border-border bg-surface w-full border-b">
+    <header className="border-border bg-surface sticky top-0 z-40 w-full border-b">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-10 px-4">
         <Link
           href="/"
@@ -41,6 +43,9 @@ export default function Header({
             {t('about')}
           </Link>
           <div className="flex items-center gap-5">
+            <span className="text-muted hidden text-sm sm:block">
+              {userDisplay}
+            </span>
             <LanguageSwitcher />
             {isAuthenticated ? (
               <>
@@ -103,6 +108,9 @@ export default function Header({
           </Link>
           {isAuthenticated ? (
             <>
+              <span className="text-muted px-1 py-2 text-sm text-end">
+                {userDisplay}
+              </span>
               <Link
                 href="/history"
                 onClick={() => setOpen(false)}

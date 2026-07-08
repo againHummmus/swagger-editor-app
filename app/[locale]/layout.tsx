@@ -65,6 +65,8 @@ export default async function LocaleLayout({
     data: { user },
   } = await supabase.auth.getUser();
   const isAuthenticated = !!user;
+  const userName = user?.user_metadata?.user_name as string | undefined;
+  const userDisplay = userName ? `${userName} (${user?.email})` : user?.email || null;
 
   return (
     <html
@@ -76,7 +78,7 @@ export default async function LocaleLayout({
             <NextTopLoader color="#85EA2D" showSpinner={false} />
             <ErrorProvider>
               <ErrorBoundary>
-                <Header isAuthenticated={isAuthenticated} />
+                <Header isAuthenticated={isAuthenticated} userDisplay={userDisplay} />
                 <main className="flex flex-1 flex-col">{children}</main>
                 <Footer />
               </ErrorBoundary>

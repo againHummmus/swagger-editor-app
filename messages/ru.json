@@ -54,6 +54,8 @@
     "title": "Регистрация",
     "emailLabel": "Email",
     "emailPlaceholder": "you@example.com",
+    "userNameLabel": "Имя",
+    "userNamePlaceholder": "Ваше имя (необязательно)",
     "passwordLabel": "Пароль",
     "passwordPlaceholder": "Создайте пароль",
     "confirmLabel": "Подтвердите пароль",

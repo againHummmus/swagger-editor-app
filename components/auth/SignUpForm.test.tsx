@@ -28,6 +28,7 @@ describe('SignUpForm', () => {
   it('renders all fields and submit button', () => {
     renderWithProviders(<SignUpForm />);
     expect(screen.getByLabelText('Email')).toBeInTheDocument();
+    expect(screen.getByLabelText('Name')).toBeInTheDocument();
     expect(screen.getByLabelText('Password')).toBeInTheDocument();
     expect(screen.getByLabelText('Confirm Password')).toBeInTheDocument();
     expect(
@@ -80,6 +81,7 @@ describe('SignUpForm', () => {
       expect(mockSignUp).toHaveBeenCalledWith({
         email: 'user@test.com',
         password: 'ValidPass1!',
+        userName: '',
         locale: 'en',
       });
     });

@@ -158,6 +158,22 @@ describe('signUp', () => {
     expect(mockSignUp).toHaveBeenCalledWith({
       email: 'user@test.com',
       password: 'ValidPass1!',
+      options: { data: { user_name: null } },
+    });
+  });
+
+  it('passes userName in options.data when provided', async () => {
+    mockSignUp.mockResolvedValue({
+      data: { user: { id: '1' } },
+      error: null,
+    });
+
+    await signUp({ ...validCredentials, userName: 'Alice' });
+
+    expect(mockSignUp).toHaveBeenCalledWith({
+      email: 'user@test.com',
+      password: 'ValidPass1!',
+      options: { data: { user_name: 'Alice' } },
     });
   });
 });
