@@ -21,7 +21,22 @@
     "placeholder": "Home - editor"
   },
   "about": {
-    "title": "About"
+    "title": "About",
+    "description": "An analogue of Swagger, for creating, editing, validating, and viewing OpenAPI specifications. The user can work with API documentation, view endpoints, execute requests, generate cURL commands, and view request history.",
+    "course": {
+      "title": "About RS School Course",
+      "description": "RS School is a free course offered by the Rolling Scopes developer community since 2013. Anyone can study at RS School, regardless of age, occupation, or location."
+    },
+    "team": {
+      "title": "Development Team",
+      "Eugene": "Passionate front-end developer and SDET(java, js stack) with a love for creating beautiful and user-friendly web applications."
+    },
+    "technologies": {
+      "title": "Technologies Used"
+    },
+    "resources": {
+      "title": "Resources"
+    }
   },
   "signIn": {
     "title": "Sign In",
