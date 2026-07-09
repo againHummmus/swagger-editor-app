@@ -39,10 +39,8 @@ export default function SwaggerWrapper({
             </div>
           </div>
         ) : (
-          <div className='w-full h-full flex items-center justify-center'>
-            <p className="text-muted">
-              Validate the schema in the editor to see its endpoints.
-            </p>
+          <div className="w-full h-full flex items-center justify-center p-4">
+            <div data-testid="loader" className="w-10 h-10 rounded-full border-2 border-border border-l-transparent animate-spin" />
           </div>
         )}
       </div>

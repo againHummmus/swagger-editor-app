@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import Editor from '@monaco-editor/react';
 import * as yaml from 'js-yaml';
 import {
@@ -34,6 +34,8 @@ export default function SwaggerEditor({
   const [isValidating, setIsValidating] = useState<boolean>(false);
   const [saveMessage, setSaveMessage] = useState<string>('');
   const [isSaving, setIsSaving] = useState<boolean>(false);
+
+  const skipInitialValidation = useRef(initialIsValid);
 
   const resetValidation = useCallback(() => {
     setSaveMessage('');
@@ -75,6 +77,10 @@ export default function SwaggerEditor({
   );
 
   useEffect(() => {
+    if (skipInitialValidation.current) {
+      skipInitialValidation.current = false;
+      return;
+    }
     const timer = setTimeout(() => {
       const detected = detectFormat(text) ?? format;
       setFormat(detected);

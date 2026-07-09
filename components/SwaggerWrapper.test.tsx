@@ -11,11 +11,11 @@ vi.mock('@/components/swagger-viewer', () => ({
 }));
 
 describe('SwaggerWrapper', () => {
-  it('shows a message to validate schema when there is no validated schema', () => {
+  it('shows a loader when there is no validated schema', () => {
     render(<SwaggerWrapper savedSchema={null} initialApi={null} />);
 
     expect(
-      screen.getByText(/validate the schema in the editor to see its endpoints/i)
+      screen.getByTestId('loader')
     ).toBeInTheDocument();
     expect(screen.queryByTestId('swagger-viewer')).not.toBeInTheDocument();
   });
