@@ -1,26 +1,16 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import Editor from '@monaco-editor/react';
 import * as yaml from 'js-yaml';
-import SwaggerParser from '@apidevtools/swagger-parser';
-import { detectFormat, type Format } from './utils';
-import type { OpenAPI } from 'openapi-types';
+import {
+  detectFormat,
+  parseAndValidate,
+  DEFAULT_SCHEMA,
+  type Format,
+} from './utils';
 import { saveSchema } from '@/app/actions/schema';
-
-const DEFAULT_SCHEMA = `openapi: 3.0.0
-info:
-  title: Sample API
-  version: 1.0.0
-  description: A sample API to get started
-paths:
-  /hello:
-    get:
-      summary: Say hello
-      responses:
-        '200':
-          description: Successful response
-`;
+import type { ApiDocument } from '@/components/swagger-viewer/types';
 
 type SavedSchema = {
   content: string;
@@ -29,35 +19,75 @@ type SavedSchema = {
 
 export default function SwaggerEditor({
   savedSchema,
+  onValidated,
+  onError,
+  initialIsValid = false,
 }: {
   savedSchema: SavedSchema;
+  onValidated: (api: ApiDocument | null) => void;
+  onError: (message: string) => void;
+  initialIsValid?: boolean;
 }) {
-
   const [text, setText] = useState(savedSchema?.content ?? DEFAULT_SCHEMA);
   const [format, setFormat] = useState<Format>(savedSchema?.format ?? 'yaml');
-  const [errorMessage, setErrorMessage] = useState<string>('');
-  const [isValid, setIsValid] = useState<boolean>(false);
+  const [isValid, setIsValid] = useState<boolean>(initialIsValid);
   const [isValidating, setIsValidating] = useState<boolean>(false);
   const [saveMessage, setSaveMessage] = useState<string>('');
   const [isSaving, setIsSaving] = useState<boolean>(false);
 
-  const handleChange = (value: string | undefined) => {
-    const newText = value ?? '';
-    setText(newText);
+  const skipInitialValidation = useRef(initialIsValid);
+
+  const resetValidation = useCallback(() => {
     setSaveMessage('');
-    setErrorMessage('');
+    onError('');
+    onValidated(null);
     setIsValid(false);
+    setIsValidating(true);
+  }, [onError, onValidated]);
+
+  const handleChange = (value: string | undefined) => {
+    setText(value ?? '');
+    resetValidation();
   };
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      const detected = detectFormat(text);
-      if (detected) {
-        setFormat((prev) => (prev === detected ? prev : detected));
+  const validateSchema = useCallback(
+    async ({ text, format }: { text: string; format: Format }) => {
+      resetValidation();
+
+      const minDelay = new Promise((resolve) => setTimeout(resolve, 500));
+
+      const [result] = await Promise.all([
+        parseAndValidate(text, format),
+        minDelay,
+      ]);
+
+      setIsValidating(false);
+
+      if (!result.ok) {
+        setIsValid(false);
+        onError(result.error);
+        return false;
       }
+
+      setIsValid(true);
+      onValidated(result.api);
+      return true;
+    },
+    [resetValidation, onError, onValidated]
+  );
+
+  useEffect(() => {
+    if (skipInitialValidation.current) {
+      skipInitialValidation.current = false;
+      return;
+    }
+    const timer = setTimeout(() => {
+      const detected = detectFormat(text) ?? format;
+      setFormat(detected);
+      validateSchema({ text, format: detected });
     }, 600);
     return () => clearTimeout(timer);
-  }, [text]);
+  }, [text, format, validateSchema]);
 
   const toggleFormat = () => {
     try {
@@ -70,59 +100,28 @@ export default function SwaggerEditor({
         setText(JSON.stringify(obj, null, 2));
         setFormat('json');
       }
-      setSaveMessage('');
-      setIsValid(false);
-      setErrorMessage('');
+      resetValidation();
     } catch (e) {
       setSaveMessage('');
-      setIsValid(false);
-      const message = e instanceof Error ? e.message : 'Schema is invalid';
-      setErrorMessage(`Cannot convert: ${message}`);
-    }
-  };
-
-  const validateSchema = async () => {
-    setIsValidating(true);
-    setErrorMessage('');
-    setSaveMessage('');
-    setIsValid(false);
-
-    const minDelay = new Promise((resolve) => setTimeout(resolve, 500));
-
-    try {
-      const obj = format === 'json' ? JSON.parse(text) : yaml.load(text);
-
-      if (!obj || typeof obj !== 'object') {
-        throw new Error('Schema must be a JSON or YAML object');
-      }
-
-      await Promise.all([
-        SwaggerParser.validate(obj as OpenAPI.Document),
-        minDelay,
-      ]);
-      setIsValid(true);
-      return true;
-    } catch (e) {
-      await minDelay;
-      const message = e instanceof Error ? e.message : 'Schema is invalid';
-      setErrorMessage(message);
-      return false;
-    } finally {
       setIsValidating(false);
+      setIsValid(false);
+      onValidated(null);
+      const message = e instanceof Error ? e.message : 'Schema is invalid';
+      onError(`Cannot convert: ${message}`);
     }
   };
 
   const handleSave = async () => {
     setIsSaving(true);
-    const isSchemaValid = await validateSchema();
+    const isSchemaValid = await validateSchema({ text, format });
     if (!isSchemaValid) {
       setIsSaving(false);
-      return
-    };
+      return;
+    }
     const result = await saveSchema(text, format);
 
     if (result?.error) {
-      setErrorMessage('Failed to save schema');
+      onError('Failed to save schema');
       setSaveMessage('');
       setIsSaving(false);
       return;
@@ -134,7 +133,7 @@ export default function SwaggerEditor({
 
 
   return (
-    <div className="flex h-[80vh] flex-col">
+    <div className="w-full min-w-0 flex h-[80vh] lg:h-full flex-col">
       <div className="mb-2 flex items-center gap-3">
         <button
           onClick={toggleFormat}
@@ -144,7 +143,7 @@ export default function SwaggerEditor({
         </button>
 
         <button
-          onClick={validateSchema}
+          onClick={() => validateSchema({ text, format })}
           disabled={isValidating || !text.trim()}
           className="cursor-pointer rounded border border-border px-3 py-1 transition-colors hover:bg-surface-muted disabled:cursor-not-allowed disabled:opacity-50"
         >
@@ -159,27 +158,29 @@ export default function SwaggerEditor({
           {isSaving ? 'Saving....' : 'Save'}
         </button>
 
-        <span className="text-muted">
-          Current format: <b>{format.toUpperCase()}</b>
+        <span className="text-muted border-2 border-muted text-sm px-2 py-0.5 rounded-full">
+          <b>{format.toUpperCase()}</b>
         </span>
+
+        {isValidating ? (
+          <div className="border-2 font-bold border-yellow-300 bg-yellow-300/30 text-yellow-700 text-sm px-2 py-0.5 rounded-full">
+            Validating...
+          </div>
+        ) : !saveMessage && isValid ? (
+          <div className="border-2 font-bold border-green-300 bg-green-300/30 text-green-700 text-sm px-2 py-0.5 rounded-full">
+            Valid
+          </div>
+        ) : (
+          <div className="border-2 font-bold border-red-300 bg-red-300/30 text-red-700 text-sm px-2 py-0.5 rounded-full">
+            Invalid
+          </div>
+        )}
       </div>
 
-      {saveMessage && 
-       <span className="mb-2 rounded border border-green-300 bg-green-50 px-3 py-2 text-green-700">
-        {saveMessage}
-      </span>}
-
-
-      {errorMessage && (
-        <div className="mb-2 whitespace-pre-wrap rounded border border-red-300 bg-red-50 px-3 py-2 text-red-700">
-          {errorMessage}
-        </div>
-      )}
-
-      {!saveMessage && isValid && (
-        <div className="mb-2 rounded border border-green-300 bg-green-50 px-3 py-2 text-green-700">
-          Schema is valid
-        </div>
+      {saveMessage && (
+        <span className="mb-2 rounded border border-green-300 bg-green-50 px-3 py-2 text-green-700">
+          {saveMessage}
+        </span>
       )}
 
       <div className="flex-1 overflow-hidden rounded border border-border">
