@@ -35,19 +35,19 @@ describe('SwaggerEditor', () => {
   });
 
   it('renders editor, toggle and validate buttons', () => {
-    render(<SwaggerEditor onValidated={() => {}} savedSchema={{ content: '', format: 'yaml' }} />);
+    render(<SwaggerEditor onValidated={() => {}} onError={() => {}} savedSchema={{ content: '', format: 'yaml' }} />);
     expect(screen.getByTestId('monaco-editor')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /convert to/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /validate/i })).toBeInTheDocument();
   });
 
   it('initial format YAML', () => {
-    render(<SwaggerEditor onValidated={() => {}} savedSchema={{ content: '', format: 'yaml' }} />);
+    render(<SwaggerEditor onValidated={() => {}} onError={() => {}} savedSchema={{ content: '', format: 'yaml' }} />);
     expect(screen.getByText('YAML')).toBeInTheDocument();
   });
 
   it('auto-detects YAML', () => {
-    render(<SwaggerEditor onValidated={() => {}} savedSchema={{ content: '', format: 'yaml' }} />);
+    render(<SwaggerEditor onValidated={() => {}} onError={() => {}} savedSchema={{ content: '', format: 'yaml' }} />);
     const editor = screen.getByTestId('monaco-editor');
 
     fireEvent.change(editor, {
@@ -73,7 +73,7 @@ describe('SwaggerEditor', () => {
   });
 
   it('auto-detects JSON', async () => {
-    render(<SwaggerEditor onValidated={() => {}} savedSchema={{ content: '', format: 'yaml' }} />);
+    render(<SwaggerEditor onValidated={() => {}} onError={() => {}} savedSchema={{ content: '', format: 'yaml' }} />);
     const editor = screen.getByTestId('monaco-editor');
 
     fireEvent.change(editor, {
@@ -109,19 +109,26 @@ describe('SwaggerEditor', () => {
   });
 
   it('invalid schema', () => {
-    render(<SwaggerEditor onValidated={() => {}} savedSchema={{ content: '', format: 'yaml' }} />);
+    const onError = vi.fn();
+    render(<SwaggerEditor onValidated={() => {}} onError={onError} savedSchema={{ content: '', format: 'yaml' }} />);
     const editor = screen.getByTestId('monaco-editor');
 
     fireEvent.change(editor, { target: { value: '{ invalid json' } });
     fireEvent.click(screen.getByRole('button', { name: /convert to/i }));
 
-    expect(screen.getByText(/cannot convert/i)).toBeInTheDocument();
+    expect(onError).toHaveBeenCalledWith(expect.stringMatching(/cannot convert/i));
   });
 
   it('valid schema is validated', async () => {
     vi.mocked(SwaggerParser.validate).mockResolvedValueOnce({} as never);
-
-    render(<SwaggerEditor onValidated={() => {}} savedSchema={{ content: '', format: 'yaml' }} />);
+    const onValidated = vi.fn();
+    render(
+      <SwaggerEditor
+        onValidated={onValidated}
+        onError={() => {}}
+        savedSchema={{ content: '', format: 'yaml' }}
+      />
+    );
     const editor = screen.getByTestId('monaco-editor');
     fireEvent.change(editor, {
       target: {
@@ -142,10 +149,9 @@ describe('SwaggerEditor', () => {
       },
     });
 
-    fireEvent.click(screen.getByRole('button', { name: /validate/i }));
-
-    await waitFor(() => {
-      expect(screen.getByText(/schema is valid/i)).toBeInTheDocument();
-    });
+    await waitFor(
+      () => expect(onValidated).toHaveBeenCalledWith(expect.anything()),
+      { timeout: 3000 }
+    );
   });
 });

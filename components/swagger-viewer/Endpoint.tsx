@@ -35,14 +35,24 @@ export default function EndpointRow({ endpoint, baseUrl }: { endpoint: Endpoint;
   const paramGroups = Object.entries(groupParamsByLocation(endpoint.parameters));
 
   const sendRequestClient = async () => {
-    const res = await sendRequest(
-      endpoint,
-      baseUrl,
-      paramValues,
-      body,
-      fileValues
-    )
-    setResponse(res)
+    try {
+      const res = await sendRequest(
+        endpoint,
+        baseUrl,
+        paramValues,
+        body,
+        fileValues
+      );
+      setResponse(res);
+    } catch (e) {
+      setResponse({
+        status: 'Error',
+        statusText: 'Request failed',
+        ok: false,
+        headers: {},
+        body: e instanceof Error ? e.message : 'Request failed',
+      });
+    }
   }
 
   return (

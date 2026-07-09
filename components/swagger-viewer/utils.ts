@@ -10,7 +10,7 @@ type Response = { description?: string; schema?: unknown; content?: Record<strin
 type Operation = {
   summary?: string;
   parameters?: Param[];
-  requestBody?: { content?: Record<string, { schema?: unknown }> };
+  requestBody?: { content?: Record<string, {example?: unknown; schema?: unknown }> };
   responses?: Record<string, Response>;
 };
 type PathItem = { parameters?: Param[] } & Partial<Record<HttpMethod, Operation>>;
@@ -69,7 +69,9 @@ function schemaFields(schema: unknown): SchemaField[] {
 function buildEndpoint(method: HttpMethod, path: string, operation: Operation, pathParameters?: Param[] ): Endpoint {
   const parameters: EndpointParam[] = [];
   let hasBody = Boolean(operation.requestBody);
-  let bodySchema: unknown = Object.values(operation.requestBody?.content ?? {})[0]?.schema;
+  const mediaTypeObject = Object.values(operation.requestBody?.content ?? {})[0];
+  let bodySchema: unknown = mediaTypeObject?.schema;
+  const bodyExample: unknown = mediaTypeObject?.example;
 
   for (const param of [...(pathParameters ?? []), ...(operation.parameters ?? [])]) {
     if (PARAM_LOCATIONS.has(param.in as ParamLocation)) {
@@ -93,7 +95,7 @@ function buildEndpoint(method: HttpMethod, path: string, operation: Operation, p
     summary: operation.summary,
     parameters,
     hasBody,
-    requestBodyExample: generateExample(bodySchema),
+    requestBodyExample: bodyExample ?? generateExample(bodySchema),
     requestBodyFields: schemaFields(bodySchema),
     responses: Object.entries(operation.responses ?? {}).map(([status, response]) => {
       const responseSchema = response.schema ?? Object.values(response.content ?? {})[0]?.schema;
