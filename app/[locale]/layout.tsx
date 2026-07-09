@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "@/app/globals.css";
 import Header from "@components/header/Header";
 import Footer from "@components/footer/Footer";
+import ErrorBoundary from "@components/error/ErrorBoundary";
+import { ErrorProvider } from "@components/error/ErrorContext";
 import NextTopLoader from "nextjs-toploader";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import {
@@ -63,6 +65,8 @@ export default async function LocaleLayout({
     data: { user },
   } = await supabase.auth.getUser();
   const isAuthenticated = !!user;
+  const userName = user?.user_metadata?.user_name as string | undefined;
+  const userDisplay = userName ? `${userName} (${user?.email})` : user?.email || null;
 
   return (
     <html
@@ -70,12 +74,16 @@ export default async function LocaleLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-surface text-foreground">
-        <NextIntlClientProvider messages={messages} locale={validLocale}>
-          <NextTopLoader color="#85EA2D" showSpinner={false} />
-          <Header isAuthenticated={isAuthenticated} />
-          <main className="flex flex-1 flex-col">{children}</main>
-          <Footer />
-        </NextIntlClientProvider>
+          <NextIntlClientProvider messages={messages} locale={validLocale}>
+            <NextTopLoader color="#85EA2D" showSpinner={false} />
+            <ErrorProvider>
+              <ErrorBoundary>
+                <Header isAuthenticated={isAuthenticated} userDisplay={userDisplay} />
+                <main className="flex flex-1 flex-col">{children}</main>
+                <Footer />
+              </ErrorBoundary>
+            </ErrorProvider>
+          </NextIntlClientProvider>
       </body>
     </html>
   );

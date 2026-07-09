@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { renderWithIntl } from '@test/intl';
+import { renderWithProviders } from '@test/intl';
 import SignUpPage from './page';
 
 const mockGetUser = vi.fn();
@@ -33,7 +33,7 @@ describe('Sign up page', () => {
 
   it('renders the form when not authenticated', async () => {
     const ui = await SignUpPage({ params: Promise.resolve({ locale: 'en' }) });
-    const { container } = renderWithIntl(ui);
+    const { container } = renderWithProviders(ui);
     expect(container.firstChild).toBeInTheDocument();
   });
 

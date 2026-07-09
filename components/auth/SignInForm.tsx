@@ -1,19 +1,20 @@
 'use client';
 
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations, useLocale } from 'next-intl';
 import { signIn } from '@/app/actions/auth';
 import { signInSchema } from '@utils/auth/validation';
+import { useError } from '@components/error/ErrorContext';
 import type { z } from 'zod';
 
 type FormData = z.infer<typeof signInSchema>;
 
 export default function SignInForm() {
   const t = useTranslations('signIn');
+  const ts = useTranslations('serverErrors');
   const locale = useLocale();
-  const [serverError, setServerError] = useState<string | null>(null);
+  const { showError } = useError();
 
   const {
     register,
@@ -25,20 +26,15 @@ export default function SignInForm() {
   });
 
   const onSubmit = async (data: FormData) => {
-    setServerError(null);
     const result = await signIn({ ...data, locale });
     if (result?.error) {
-      setServerError(t(result.error as Parameters<typeof t>[0]));
+      const message = ts.has(result.error as never) ? ts(result.error as never) : result.error;
+      showError(message, t('title'));
     }
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-      {serverError && (
-        <p role="alert" className="text-method-delete text-sm">
-          {serverError}
-        </p>
-      )}
 
       <div className="flex flex-col gap-1">
         <label htmlFor="email" className="text-sm font-medium">

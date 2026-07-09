@@ -13,6 +13,13 @@
     "changeLanguage": "Сменить язык",
     "toggleMenu": "Открыть меню"
   },
+  "serverErrors": {
+    "invalid_credentials": "Неверный email или пароль",
+    "email_not_confirmed": "Подтвердите email перед входом",
+    "email_address_invalid": "Неверный формат email адреса",
+    "over_email_send_rate_limit": "Слишком много попыток регистрации. Подождите перед следующей попыткой",
+    "user_repeated_signup": "Аккаунт с таким email уже существует"
+  },
   "footer": {
     "copyright": "© 2026 Swagger Editor App.",
     "about": "О проекте"
@@ -23,6 +30,9 @@
   "about": {
     "title": "О проекте"
   },
+  "popup": {
+    "dismiss": "Закрыть"
+  },
   "signIn": {
     "title": "Войти",
     "emailLabel": "Email",
@@ -30,7 +40,6 @@
     "passwordLabel": "Пароль",
     "passwordPlaceholder": "Введите пароль",
     "submit": "Войти",
-    "serverError": "Неверный email или пароль",
     "validation": {
       "emailRequired": "Email обязателен",
       "emailInvalid": "Введите корректный email",
@@ -45,12 +54,14 @@
     "title": "Регистрация",
     "emailLabel": "Email",
     "emailPlaceholder": "you@example.com",
+    "userNameLabel": "Имя",
+    "userNamePlaceholder": "Ваше имя (необязательно)",
     "passwordLabel": "Пароль",
     "passwordPlaceholder": "Создайте пароль",
     "confirmLabel": "Подтвердите пароль",
     "confirmPlaceholder": "Повторите пароль",
     "submit": "Создать аккаунт",
-    "serverError": "Аккаунт с таким email уже существует",
+    "successMessage": "Аккаунт создан! Проверьте email, чтобы подтвердить регистрацию.",
     "validation": {
       "emailRequired": "Email обязателен",
       "emailInvalid": "Введите корректный email",

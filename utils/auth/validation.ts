@@ -25,6 +25,7 @@ export const signUpSchema = z
       .regex(/\d/, 'validation.passwordDigit')
       .regex(/[^\w\s]/, 'validation.passwordSpecial'),
     confirmPassword: z.string().min(1, 'validation.confirmRequired'),
+    userName: z.string().optional(),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: 'validation.confirmMismatch',

@@ -17,7 +17,7 @@ export async function signIn(formData: {
   });
 
   if (error) {
-    return { error: 'serverError' };
+    return { error: error.code ?? error.message };
   }
 
   redirect({ href: '/', locale: ensureLocale(formData.locale) });
@@ -37,16 +37,22 @@ export async function signUp(formData: {
   email: string;
   password: string;
   locale: string;
-}): Promise<{ error: string } | undefined> {
+  userName?: string;
+}): Promise<{ error: string } | { success: true } | undefined> {
   const supabase = await createClient();
   const { error } = await supabase.auth.signUp({
     email: formData.email,
     password: formData.password,
+    options: {
+      data: {
+        user_name: formData.userName ?? null,
+      },
+    },
   });
 
   if (error) {
-    return { error: 'serverError' };
+    return { error: error.code ?? error.message };
   }
 
-  redirect({ href: '/', locale: ensureLocale(formData.locale) });
+  return { success: true };
 }
