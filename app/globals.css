@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 :root {
+  --accent: 132 235 45;
   --surface: 255 255 255;
   --surface-muted: 250 250 250;
   --border: 228 228 231;
@@ -20,6 +21,7 @@
 }
 
 @theme inline {
+  --color-accent: rgb(var(--accent));
   --color-surface: rgb(var(--surface));
   --color-surface-muted: rgb(var(--surface-muted));
   --color-border: rgb(var(--border));
@@ -78,4 +80,15 @@
   margin-bottom: 2rem;
   max-width: 1280px;
   padding-inline: 1rem;
+}
+
+@media (min-width: 64rem) {
+  body:has([data-fullscreen-page]) {
+    height: 100dvh;
+    overflow: hidden;
+  }
+
+  body:has([data-fullscreen-page]) main {
+    min-height: 0;
+  }
 }

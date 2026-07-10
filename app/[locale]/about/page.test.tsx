@@ -72,7 +72,7 @@ describe('About page', () => {
     expect(githubLinks[0]).toHaveAttribute('href', 'https://github.com/Eugeku');
     expect(githubLinks[1]).toHaveAttribute(
       'href',
-      'https://github.com/againHummmuse'
+      'https://github.com/againHummmus'
     );
     expect(githubLinks[2]).toHaveAttribute('href', 'https://github.com/oreopk');
   });

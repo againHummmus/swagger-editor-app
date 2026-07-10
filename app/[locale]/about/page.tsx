@@ -7,8 +7,9 @@ export default async function AboutPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  setRequestLocale(ensureLocale(locale));
-  const t = await getTranslations('about');
+  const activeLocale = ensureLocale(locale);
+  setRequestLocale(activeLocale);
+  const t = await getTranslations({ locale: activeLocale, namespace: 'about' });
 
   const technologies = [
     'Next.js',
@@ -27,7 +28,7 @@ export default async function AboutPage({
         <p className="text-muted max-w-3xl text-lg">{t('description')}</p>
       </section>
 
-      <section className="rounded-lg border border-border bg-surface px-6 py-5">
+      <section className="rounded-lg border-l-3 border-l-accent border border-border bg-surface px-6 py-5">
         <h2 className="mb-3 text-xl">{t('course.title')}</h2>
         <p className="text-muted">{t('course.description')}</p>
       </section>
@@ -46,7 +47,7 @@ export default async function AboutPage({
               href="https://github.com/Eugeku"
               target="_blank"
               rel="noreferrer"
-              className="mt-auto rounded-md border border-border px-3 py-1.5 text-center text-sm font-medium transition-colors hover:bg-surface-muted"
+              className="mt-auto rounded-md bg-accent font-bold px-3 py-1.5 text-center text-sm transition-all hover:opacity-80"
             >
               GitHub
             </a>
@@ -59,10 +60,10 @@ export default async function AboutPage({
             </div>
             <p className="text-muted text-sm"></p>
             <a
-              href="https://github.com/againHummmuse"
+              href="https://github.com/againHummmus"
               target="_blank"
               rel="noreferrer"
-              className="mt-auto rounded-md border border-border px-3 py-1.5 text-center text-sm font-medium transition-colors hover:bg-surface-muted"
+              className="mt-auto rounded-md bg-accent font-bold px-3 py-1.5 text-center text-sm transition-all hover:opacity-80"
             >
               GitHub
             </a>
@@ -78,7 +79,7 @@ export default async function AboutPage({
               href="https://github.com/oreopk"
               target="_blank"
               rel="noreferrer"
-              className="mt-auto rounded-md border border-border px-3 py-1.5 text-center text-sm font-medium transition-colors hover:bg-surface-muted"
+              className="mt-auto rounded-md bg-accent font-bold px-3 py-1.5 text-center text-sm transition-all hover:opacity-80"
             >
               GitHub
             </a>
@@ -92,7 +93,7 @@ export default async function AboutPage({
           {technologies.map((technology) => (
             <li
               key={technology}
-              className="rounded-md border border-border bg-surface-muted px-3 py-1.5 text-sm"
+              className="rounded-md border border-accent bg-[#86eb2e15] font-bold text-[#5ac000] px-3 py-1.5 text-sm"
             >
               {technology}
             </li>

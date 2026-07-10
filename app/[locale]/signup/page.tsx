@@ -10,17 +10,18 @@ export default async function SignUpPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  setRequestLocale(ensureLocale(locale));
+  const activeLocale = ensureLocale(locale);
+  setRequestLocale(activeLocale);
 
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
   if (user) {
-    redirect({ href: '/', locale: ensureLocale(locale) });
+    redirect({ href: '/', locale: activeLocale });
   }
 
-  const t = await getTranslations('signUp');
+  const t = await getTranslations({ locale: activeLocale, namespace: 'signUp' });
 
   return (
     <div className="container flex flex-1 items-center justify-center px-6 py-16">

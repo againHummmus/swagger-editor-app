@@ -22,7 +22,7 @@ export default function SwaggerWrapper({
   const [errorMessage, setErrorMessage] = useState<string>('');
 
   return (
-    <div className="flex lg:h-[80vh] flex-col gap-4 lg:flex-row">
+    <div className="flex flex-col gap-4 lg:min-h-0 lg:flex-1 lg:flex-row">
       <SwaggerEditor
         savedSchema={savedSchema}
         onValidated={setValidatedApi}
@@ -33,9 +33,12 @@ export default function SwaggerWrapper({
         {validatedApi ? (
           <SwaggerViewer api={validatedApi} />
         ) : errorMessage ? (
-          <div className="w-full h-full flex items-center justify-center p-4">
-            <div className="max-w-full whitespace-pre-wrap rounded border border-red-300 bg-red-50 px-3 py-2 text-red-700">
+          <div className="w-full py-10">
+            <div className="relative w-full whitespace-pre-wrap rounded-lg border border-dashed border-red-300 bg-red-50/40 px-3 py-2 text-red-700">
               {errorMessage}
+              <div className="absolute top-2 right-2 text-xl font-bold rounded-full border border-red-300 text-red-700 bg-red-50/50 w-8 h-8 flex items-center justify-center">
+                !
+              </div>
             </div>
           </div>
         ) : (
