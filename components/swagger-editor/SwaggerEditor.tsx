@@ -166,7 +166,7 @@ export default function SwaggerEditor({
           <div className="border-2 font-bold border-yellow-300 bg-yellow-300/30 text-yellow-700 text-sm px-2 py-0.5 rounded-full">
             Validating...
           </div>
-        ) : !saveMessage && isValid ? (
+        ) : isValid ? (
           <div className="border-2 font-bold border-green-300 bg-green-300/30 text-green-700 text-sm px-2 py-0.5 rounded-full">
             Valid
           </div>

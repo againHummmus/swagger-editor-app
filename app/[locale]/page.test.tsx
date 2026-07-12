@@ -3,12 +3,17 @@ import { render } from "@testing-library/react";
 import Home from "./page";
 
 vi.mock('@/app/actions/schema', () => ({
-  getSavedSchema: vi.fn().mockResolvedValue(null),
+  getSavedSchema: vi.fn().mockResolvedValue({ data: null, error: null }),
 }));
 
 vi.mock("next-intl/server", () => ({
   getTranslations: async () => (key: string) => key,
   setRequestLocale: () => {},
+}));
+
+vi.mock("next-intl", () => ({
+  useTranslations: () => (key: string) => key,
+  hasLocale: () => true,
 }));
 
 describe("Home page", () => {

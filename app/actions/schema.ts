@@ -37,16 +37,15 @@ const user = userResult.data.user;
 }
 
 export async function getSavedSchema(): Promise<{
-  content: string;
-  format: Format;
-} | null> {
- 
-const supabase = await createClient();
-const userResult = await supabase.auth.getUser();
-const user = userResult.data.user;
+  data?: { content: string; format: Format };
+  error?: string;
+}> {
+  const supabase = await createClient();
+  const userResult = await supabase.auth.getUser();
+  const user = userResult.data.user;
 
   if (!user) {
-    return null;
+    return {};
   }
 
   const { data, error } = await supabase
@@ -55,12 +54,18 @@ const user = userResult.data.user;
     .eq('user_id', user.id)
     .maybeSingle();
 
-  if (error || !data) {
-    return null;
+  if (error) {
+    return { error: error.message };
+  }
+
+  if (!data) {
+    return {};
   }
 
   return {
-    content: data.content,
-    format: data.format as Format,
+    data: {
+      content: data.content,
+      format: data.format as Format,
+    },
   };
 }
