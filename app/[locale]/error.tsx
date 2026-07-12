@@ -14,8 +14,10 @@ export default function Error({
 
   return (
     <InfoPopup
-      message={`Unhandled server error: ${error.message}`}
-      dismissLabel={tc('dismiss')}
+      title={tc('serverErrorTitle')}
+      variant="none"
+      message={`${tc('serverErrorMessage')}\n${error.message}`}
+      dismissLabel={tc('reload')}
       onClose={reset}
     />
   );
