@@ -14,9 +14,11 @@ type SavedSchema = {
 export default function SwaggerWrapper({
   savedSchema,
   initialApi,
+  isAuthenticated = false,
 }: {
   savedSchema: SavedSchema;
   initialApi: ApiDocument | null;
+  isAuthenticated?: boolean;
 }) {
   const [validatedApi, setValidatedApi] = useState<ApiDocument | null>(initialApi);
   const [errorMessage, setErrorMessage] = useState<string>('');
@@ -28,6 +30,7 @@ export default function SwaggerWrapper({
         onValidated={setValidatedApi}
         onError={setErrorMessage}
         initialIsValid={initialApi !== null}
+        isAuthenticated={isAuthenticated}
       />
       <div className="w-full h-full min-w-0 flex overflow-y-auto">
         {validatedApi ? (

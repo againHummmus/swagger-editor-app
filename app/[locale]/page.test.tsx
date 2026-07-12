@@ -6,6 +6,12 @@ vi.mock('@/app/actions/schema', () => ({
   getSavedSchema: vi.fn().mockResolvedValue({ data: null, error: null }),
 }));
 
+vi.mock('@utils/supabase/server', () => ({
+  createClient: async () => ({
+    auth: { getUser: vi.fn().mockResolvedValue({ data: { user: null } }) },
+  }),
+}));
+
 vi.mock("next-intl/server", () => ({
   getTranslations: async () => (key: string) => key,
   setRequestLocale: () => {},

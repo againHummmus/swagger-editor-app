@@ -7,6 +7,7 @@ import {
 } from '@/components/swagger-editor/utils';
 import SwaggerWrapper from '@/components/SwaggerWrapper';
 import ServerErrorHandler from '@/components/error/ServerErrorHandler';
+import { createClient } from '@utils/supabase/server';
 
 export default async function Home({
   params,
@@ -23,6 +24,12 @@ export default async function Home({
     savedSchema?.format ?? 'yaml'
   );
 
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  const isAuthenticated = !!user;
+
   return (
     <ServerErrorHandler error={error ?? ''}>
       <div
@@ -32,6 +39,7 @@ export default async function Home({
         <SwaggerWrapper
           savedSchema={savedSchema ?? null}
           initialApi={initial.ok ? initial.api : null}
+          isAuthenticated={isAuthenticated}
         />
       </div>
     </ServerErrorHandler>

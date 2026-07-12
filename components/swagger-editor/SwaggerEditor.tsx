@@ -23,11 +23,13 @@ export default function SwaggerEditor({
   onValidated,
   onError,
   initialIsValid = false,
+  isAuthenticated = false,
 }: {
   savedSchema: SavedSchema;
   onValidated: (api: ApiDocument | null) => void;
   onError: (message: string) => void;
   initialIsValid?: boolean;
+  isAuthenticated?: boolean;
 }) {
   const t = useTranslations('editor');
   const [text, setText] = useState(savedSchema?.content ?? DEFAULT_SCHEMA);
@@ -152,13 +154,15 @@ export default function SwaggerEditor({
           {isValidating ? t('validating') : t('validate')}
         </button>
 
-        <button
-          onClick={handleSave}
-          className="cursor-pointer rounded border border-border px-3 py-1 transition-colors hover:bg-surface-muted disabled:cursor-not-allowed disabled:opacity-50"
-          disabled={isSaving || isValidating || !text.trim()}
-        >
-          {isSaving ? t('saving') : t('save')}
-        </button>
+        {isAuthenticated && (
+          <button
+            onClick={handleSave}
+            className="cursor-pointer rounded border border-border px-3 py-1 transition-colors hover:bg-surface-muted disabled:cursor-not-allowed disabled:opacity-50"
+            disabled={isSaving || isValidating || !text.trim()}
+          >
+            {isSaving ? t('saving') : t('save')}
+          </button>
+        )}
 
         <span className="text-muted border-2 border-muted text-sm px-2 py-0.5 rounded-full">
           <b>{format.toUpperCase()}</b>
