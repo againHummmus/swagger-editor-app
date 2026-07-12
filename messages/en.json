@@ -46,7 +46,10 @@
     }
   },
   "popup": {
-    "dismiss": "Dismiss"
+    "serverErrorTitle": "Server error",
+    "serverErrorMessage": "Unhandled server error\nPlease try reloading the page\nError details:",
+    "dismiss": "Dismiss",
+    "reload": "Reload"
   },
   "signIn": {
     "title": "Sign In",

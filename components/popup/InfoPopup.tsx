@@ -7,7 +7,7 @@ type InfoPopupProps = {
   message: string;
   onClose: () => void;
   title?: string;
-  variant?: 'error' | 'success';
+  variant?: 'error' | 'success' | 'none';
   dismissLabel?: string;
 };
 
@@ -19,6 +19,8 @@ export default function InfoPopup({
   dismissLabel = 'Dismiss',
 }: InfoPopupProps) {
   const isSuccess = variant === 'success';
+  const isNone = variant === 'none';
+
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -54,13 +56,15 @@ export default function InfoPopup({
             )}
             <h2 className="text-lg font-semibold text-foreground">{title}</h2>
           </div>
-          <button
-            onClick={onClose}
-            className="cursor-pointer rounded p-1 text-muted transition-colors hover:bg-surface-muted hover:text-foreground"
-            aria-label="Close"
-          >
-            <X className="h-5 w-5" />
-          </button>
+          {!isNone && (
+            <button
+              onClick={onClose}
+              className="cursor-pointer rounded p-1 text-muted transition-colors hover:bg-surface-muted hover:text-foreground"
+              aria-label="Close"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          )}
         </div>
 
         <p className="whitespace-pre-wrap text-sm leading-relaxed text-foreground">

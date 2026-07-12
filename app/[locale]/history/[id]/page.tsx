@@ -4,6 +4,7 @@ import { ensureLocale } from '@i18n/getValidatedLocale';
 import { Link } from '@i18n/navigation';
 import { getHistoryEntry } from '@/app/actions/requestHistory';
 import RequestDetails from '@/components/history/RequestDetails';
+import ServerErrorHandler from '@/components/error/ServerErrorHandler';
 
 export default async function HistoryEntryPage({
   params,
@@ -14,20 +15,23 @@ export default async function HistoryEntryPage({
   const validLocale = ensureLocale(locale);
   setRequestLocale(validLocale);
 
-  const { data: log } = await getHistoryEntry(id);
+  const { data: log, error } = await getHistoryEntry(id);
+
   if (!log) {
     notFound();
   }
 
   return (
-    <div className="container">
-      <Link
-        href="/history"
-        className="text-muted hover:text-foreground text-sm transition-colors"
-      >
-        ← Back to history
-      </Link>
-      <RequestDetails log={log} locale={validLocale} />
-    </div>
+    <ServerErrorHandler error={error ?? ''}>
+      <div className="container">
+        <Link
+          href="/history"
+          className="text-muted hover:text-foreground text-sm transition-colors"
+        >
+          ← Back to history
+        </Link>
+        <RequestDetails log={log} locale={validLocale} />
+      </div>
+    </ServerErrorHandler>
   );
 }

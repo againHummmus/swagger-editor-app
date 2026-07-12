@@ -25,19 +25,26 @@ export type RequestLog = {
 
 export type RequestLogEntry = Omit<RequestLog, 'id' | 'created_at'>;
 
-export async function logRequest(entry: RequestLogEntry): Promise<void> {
+export async function logRequest(entry: RequestLogEntry): Promise<{ error?: string }> {
   try {
     const supabase = await createClient();
     const userResult = await supabase.auth.getUser();
     const user = userResult.data.user;
 
     if (!user) {
-      return;
+      return {};
     }
 
-    await supabase.from('request_history').insert({ ...entry, user_id: user.id });
+    const { error } = await supabase.from('request_history').insert({ ...entry, user_id: user.id });
+
+    if (error) {
+      return { error: error.message };
+    }
+
+    return {};
   } catch(e) {
-    console.error('There was en error logging the request:', e)
+    const message = e instanceof Error ? e.message : 'Failed to log request';
+    return { error: message };
   }
 }
 
