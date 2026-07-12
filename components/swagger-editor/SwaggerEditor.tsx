@@ -134,7 +134,7 @@ export default function SwaggerEditor({
 
   return (
     <div className="w-full min-w-0 flex h-[80vh] lg:h-full flex-col">
-      <div className="mb-2 flex items-center gap-3">
+      <div className="mb-2 flex items-center flex-wrap gap-3">
         <button
           onClick={toggleFormat}
           className="cursor-pointer rounded border border-border px-3 py-1 transition-colors hover:bg-surface-muted"
@@ -183,7 +183,7 @@ export default function SwaggerEditor({
         </span>
       )}
 
-      <div className="flex-1 overflow-hidden rounded border border-border">
+      <div className="flex-1 overflow-hidden rounded-lg border border-border">
         <Editor
           height="100%"
           language={format}

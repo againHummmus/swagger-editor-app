@@ -1,6 +1,6 @@
 import type { MouseEventHandler, ReactNode } from 'react';
 import { describe, it, expect, vi } from 'vitest';
-import { screen, fireEvent } from '@testing-library/react';
+import { screen, fireEvent, within } from '@testing-library/react';
 import { renderWithIntl } from '@test/intl';
 import Header from './Header';
 
@@ -50,11 +50,13 @@ describe('Header', () => {
 
   it('renders an accessible language switcher', () => {
     renderWithIntl(<Header />);
-    expect(
-      screen.getByRole('group', { name: /change language/i })
-    ).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'EN' })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'RU' })).toBeInTheDocument();
+    const switcher = screen.getByTestId('locale-switcher');
+    expect(switcher).toBeInTheDocument();
+
+    fireEvent.click(within(switcher).getByRole('button'));
+
+    expect(within(switcher).getByRole('link', { name: 'EN' })).toBeInTheDocument();
+    expect(within(switcher).getByRole('link', { name: 'RU' })).toBeInTheDocument();
   });
 
   it('toggles the mobile menu when the menu button is clicked', () => {
@@ -142,14 +144,14 @@ describe('Header', () => {
     it('renders language switcher when not authenticated', () => {
       renderWithIntl(<Header />);
       expect(
-        screen.getByRole('group', { name: /change language/i })
+        screen.getByTestId('locale-switcher')
       ).toBeInTheDocument();
     });
 
     it('renders language switcher when authenticated', () => {
       renderWithIntl(<Header isAuthenticated />);
       expect(
-        screen.getByRole('group', { name: /change language/i })
+        screen.getByTestId('locale-switcher')
       ).toBeInTheDocument();
     });
   });

@@ -23,7 +23,10 @@ export default async function Home({
   );
 
   return (
-    <div className="container flex flex-1 flex-col">
+    <div
+      data-fullscreen-page
+      className="container flex flex-1 flex-col lg:min-h-0"
+    >
       <SwaggerWrapper
         savedSchema={savedSchema}
         initialApi={initial.ok ? initial.api : null}

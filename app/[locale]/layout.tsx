@@ -58,7 +58,7 @@ export default async function LocaleLayout({
   const validLocale = ensureLocale(locale);
 
   setRequestLocale(validLocale);
-  const messages = await getMessages();
+  const messages = await getMessages({ locale: validLocale });
 
   const supabase = await createClient();
   const {
@@ -80,7 +80,7 @@ export default async function LocaleLayout({
               <ErrorBoundary>
                 <Header isAuthenticated={isAuthenticated} userDisplay={userDisplay} />
                 <main className="flex flex-1 flex-col">{children}</main>
-                <Footer />
+                <Footer locale={validLocale} />
               </ErrorBoundary>
             </ErrorProvider>
           </NextIntlClientProvider>
