@@ -21,7 +21,7 @@ export default function Response({ response, statusText, ok, headers, body }: {
 }) {
   const t = useTranslations('viewer');
   return (
-    <li className={`flex flex-col ${statusBadgeClass(response.status)}`}>
+    <li className={`flex p-1 flex-col ${statusBadgeClass(response.status)}`}>
       <div className="flex items-center gap-2 p-1">
         <span className={`rounded px-1.5 py-0.5 font-mono text-xs font-bold`}>
           {response.status}
