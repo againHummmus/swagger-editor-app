@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { describe, expect, it, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
+import { renderWithIntl as render } from '@/test/intl';
 import type { RequestLog } from '@/app/actions/requestHistory';
 import RequestCard from './RequestCard';
 

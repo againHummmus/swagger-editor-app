@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import Editor from '@monaco-editor/react';
 import * as yaml from 'js-yaml';
+import { useTranslations } from 'next-intl';
 import {
   detectFormat,
   parseAndValidate,
@@ -28,6 +29,7 @@ export default function SwaggerEditor({
   onError: (message: string) => void;
   initialIsValid?: boolean;
 }) {
+  const t = useTranslations('editor');
   const [text, setText] = useState(savedSchema?.content ?? DEFAULT_SCHEMA);
   const [format, setFormat] = useState<Format>(savedSchema?.format ?? 'yaml');
   const [isValid, setIsValid] = useState<boolean>(initialIsValid);
@@ -107,7 +109,7 @@ export default function SwaggerEditor({
       setIsValid(false);
       onValidated(null);
       const message = e instanceof Error ? e.message : 'Schema is invalid';
-      onError(`Cannot convert: ${message}`);
+      onError(t('cannotConvert', { message }));
     }
   };
 
@@ -121,25 +123,25 @@ export default function SwaggerEditor({
     const result = await saveSchema(text, format);
 
     if (result?.error) {
-      onError('Failed to save schema');
+      onError(t('saveFailed'));
       setSaveMessage('');
       setIsSaving(false);
       return;
     }
 
-    setSaveMessage('Schema saved');
+    setSaveMessage(t('schemaSaved'));
     setIsSaving(false);
   };
 
 
   return (
     <div className="w-full min-w-0 flex h-[80vh] lg:h-full flex-col">
-      <div className="mb-2 flex items-center flex-wrap gap-3">
+      <div className="mb-2 flex text-sm items-center flex-wrap gap-3">
         <button
           onClick={toggleFormat}
           className="cursor-pointer rounded border border-border px-3 py-1 transition-colors hover:bg-surface-muted"
         >
-          Convert to {format === 'json' ? 'YAML' : 'JSON'}
+          {format === 'json' ? t('convertToYaml') : t('convertToJson')}
         </button>
 
         <button
@@ -147,7 +149,7 @@ export default function SwaggerEditor({
           disabled={isValidating || !text.trim()}
           className="cursor-pointer rounded border border-border px-3 py-1 transition-colors hover:bg-surface-muted disabled:cursor-not-allowed disabled:opacity-50"
         >
-          {isValidating ? 'Validating...' : 'Validate'}
+          {isValidating ? t('validating') : t('validate')}
         </button>
 
         <button
@@ -155,7 +157,7 @@ export default function SwaggerEditor({
           className="cursor-pointer rounded border border-border px-3 py-1 transition-colors hover:bg-surface-muted disabled:cursor-not-allowed disabled:opacity-50"
           disabled={isSaving || isValidating || !text.trim()}
         >
-          {isSaving ? 'Saving....' : 'Save'}
+          {isSaving ? t('saving') : t('save')}
         </button>
 
         <span className="text-muted border-2 border-muted text-sm px-2 py-0.5 rounded-full">
@@ -164,15 +166,15 @@ export default function SwaggerEditor({
 
         {isValidating ? (
           <div className="border-2 font-bold border-yellow-300 bg-yellow-300/30 text-yellow-700 text-sm px-2 py-0.5 rounded-full">
-            Validating...
+            {t('validating')}
           </div>
         ) : isValid ? (
           <div className="border-2 font-bold border-green-300 bg-green-300/30 text-green-700 text-sm px-2 py-0.5 rounded-full">
-            Valid
+            {t('valid')}
           </div>
         ) : (
           <div className="border-2 font-bold border-red-300 bg-red-300/30 text-red-700 text-sm px-2 py-0.5 rounded-full">
-            Invalid
+            {t('invalid')}
           </div>
         )}
       </div>

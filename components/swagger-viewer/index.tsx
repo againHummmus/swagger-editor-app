@@ -1,16 +1,18 @@
 'use client';
 
 import { useMemo } from 'react';
+import { useTranslations } from 'next-intl';
 import type { ApiDocument } from './types';
 import { getEndpointGroups, getBaseUrl } from './utils';
 import EndpointRow from './Endpoint';
 
 export default function SwaggerViewer({ api }: { api: ApiDocument }) {
+  const t = useTranslations('viewer');
   const baseUrl = useMemo(() => getBaseUrl(api), [api]);
   const groups = useMemo(() => getEndpointGroups(api), [api]);
 
   if (groups.length === 0) {
-    return <p className="text-muted">No endpoints found in this schema.</p>;
+    return <p className="text-muted">{t('noEndpoints')}</p>;
   }
 
   return (

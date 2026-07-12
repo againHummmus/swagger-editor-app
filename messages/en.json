@@ -48,8 +48,56 @@
   "popup": {
     "serverErrorTitle": "Server error",
     "serverErrorMessage": "Unhandled server error\nPlease try reloading the page\nError details:",
+    "errorTitle": "Error",
     "dismiss": "Dismiss",
-    "reload": "Reload"
+    "close": "Close",
+    "reload": "Reload",
+    "unhandledServerError": "Unhandled server error: {message}"
+  },
+  "editor": {
+    "convertToYaml": "Convert to YAML",
+    "convertToJson": "Convert to JSON",
+    "validate": "Validate",
+    "validating": "Validating...",
+    "save": "Save",
+    "saving": "Saving...",
+    "valid": "Valid",
+    "invalid": "Invalid",
+    "schemaSaved": "Schema saved",
+    "saveFailed": "Failed to save schema",
+    "cannotConvert": "Cannot convert: {message}"
+  },
+  "viewer": {
+    "noEndpoints": "No endpoints found in this schema.",
+    "requestBody": "Request Body",
+    "responses": "Responses",
+    "result": "Result",
+    "execute": "Execute!",
+    "failed": "Failed",
+    "curl": "cURL",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "generateCurl": "Generate cURL!",
+    "regenerateCurl": "Regenerate cURL!",
+    "error": "Error",
+    "requestFailed": "Request failed"
+  },
+  "history": {
+    "title": "History & Analytics",
+    "empty": "You haven't executed any requests yet!",
+    "goToEditor": "Go to the Editor",
+    "back": "Back to history",
+    "error": "Error",
+    "url": "URL",
+    "timestamp": "Timestamp",
+    "duration": "Duration",
+    "requestSize": "Request size",
+    "responseSize": "Response size"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "The page you’re looking for doesn’t exist or has been moved.",
+    "backHome": "Back home"
   },
   "signIn": {
     "title": "Sign In",

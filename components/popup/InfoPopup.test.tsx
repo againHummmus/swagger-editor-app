@@ -1,5 +1,6 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { renderWithIntl as render } from '@/test/intl';
 import InfoPopup from './InfoPopup';
 
 describe('InfoPopup', () => {

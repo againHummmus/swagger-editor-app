@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
+import { renderWithIntl as render } from "@/test/intl";
 import SwaggerViewer from "./index";
 import type { ApiDocument } from "./types";
 

@@ -7,8 +7,15 @@ import HistoryPage from './page';
 
 const mockGetHistory = vi.fn();
 
+const messages: Record<string, string> = {
+  title: 'History & Analytics',
+  empty: "You haven't executed any requests yet!",
+  goToEditor: 'Go to the Editor',
+};
+
 vi.mock('next-intl/server', () => ({
   setRequestLocale: () => {},
+  getTranslations: async () => (key: string) => messages[key] ?? key,
 }));
 
 vi.mock('@i18n/getValidatedLocale', () => ({

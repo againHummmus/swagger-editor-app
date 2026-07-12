@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import EndpointHeader from './ui/EndpointHeader';
 import SectionLabel from './ui/SectionLabel';
 import Param from './ui/Param';
@@ -10,6 +11,7 @@ import type { Endpoint } from './types';
 import { sendRequest, type SendRequestResult } from '@/app/actions/tryItOut';
 
 export default function EndpointRow({ endpoint, baseUrl }: { endpoint: Endpoint; baseUrl: string }) {
+  const t = useTranslations('viewer');
   const hasBody = endpoint.requestBodyExample != null;
 
   const [open, setOpen] = useState(false);
@@ -46,11 +48,11 @@ export default function EndpointRow({ endpoint, baseUrl }: { endpoint: Endpoint;
       setResponse(res);
     } catch (e) {
       setResponse({
-        status: 'Error',
-        statusText: 'Request failed',
+        status: t('error'),
+        statusText: t('requestFailed'),
         ok: false,
         headers: {},
-        body: e instanceof Error ? e.message : 'Request failed',
+        body: e instanceof Error ? e.message : t('requestFailed'),
       });
     }
   }
@@ -99,7 +101,7 @@ export default function EndpointRow({ endpoint, baseUrl }: { endpoint: Endpoint;
 
             {endpoint.responses.length > 0 && (
               <div className="flex flex-col gap-2">
-                <SectionLabel>Responses</SectionLabel>
+                <SectionLabel>{t('responses')}</SectionLabel>
                 <ul className="flex flex-col gap-3">
                   {endpoint.responses.map((response) => (
                     <Response key={response.status} response={response} />
@@ -119,12 +121,12 @@ export default function EndpointRow({ endpoint, baseUrl }: { endpoint: Endpoint;
                 className="py-2 cursor-pointer w-full bg-black text-white rounded-md hover:bg-black/90"
                 onClick={sendRequestClient}
               >
-                Execute!
+                {t('execute')}
               </button>
             </div>
             {response && (
               <div className="flex flex-col gap-2">
-                <SectionLabel>Result</SectionLabel>
+                <SectionLabel>{t('result')}</SectionLabel>
                 <ul className="flex flex-col gap-3">
                   <Response
                     response={{ status: response.status }}

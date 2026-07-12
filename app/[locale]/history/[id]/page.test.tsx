@@ -9,6 +9,7 @@ const mockGetHistoryEntry = vi.fn();
 
 vi.mock('next-intl/server', () => ({
   setRequestLocale: () => {},
+  getTranslations: async () => (key: string) => key,
 }));
 
 vi.mock('@i18n/getValidatedLocale', () => ({

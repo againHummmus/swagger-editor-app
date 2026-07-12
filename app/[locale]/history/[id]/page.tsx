@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import { setRequestLocale } from 'next-intl/server';
+import { setRequestLocale, getTranslations } from 'next-intl/server';
 import { ensureLocale } from '@i18n/getValidatedLocale';
 import { Link } from '@i18n/navigation';
 import { getHistoryEntry } from '@/app/actions/requestHistory';
@@ -14,6 +14,7 @@ export default async function HistoryEntryPage({
   const { locale, id } = await params;
   const validLocale = ensureLocale(locale);
   setRequestLocale(validLocale);
+  const t = await getTranslations({ locale: validLocale, namespace: 'history' });
 
   const { data: log, error } = await getHistoryEntry(id);
 
@@ -28,7 +29,7 @@ export default async function HistoryEntryPage({
           href="/history"
           className="text-muted hover:text-foreground text-sm transition-colors"
         >
-          ← Back to history
+          ← {t('back')}
         </Link>
         <RequestDetails log={log} locale={validLocale} />
       </div>

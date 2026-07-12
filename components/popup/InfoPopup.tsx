@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useCallback } from 'react';
+import { useTranslations } from 'next-intl';
 import { X, AlertCircle, CheckCircle } from 'lucide-react';
 
 type InfoPopupProps = {
@@ -14,10 +15,13 @@ type InfoPopupProps = {
 export default function InfoPopup({
   message,
   onClose,
-  title = 'Error',
+  title,
   variant = 'error',
-  dismissLabel = 'Dismiss',
+  dismissLabel,
 }: InfoPopupProps) {
+  const t = useTranslations('popup');
+  const resolvedTitle = title ?? t('errorTitle');
+  const resolvedDismiss = dismissLabel ?? t('dismiss');
   const isSuccess = variant === 'success';
   const isNone = variant === 'none';
 
@@ -41,7 +45,7 @@ export default function InfoPopup({
       onClick={onClose}
       role="dialog"
       aria-modal="true"
-      aria-label={title}
+      aria-label={resolvedTitle}
     >
       <div
         className="mx-4 w-full max-w-md rounded-lg border border-border bg-surface p-6 shadow-lg"
@@ -54,13 +58,13 @@ export default function InfoPopup({
             ) : (
               <AlertCircle className="h-6 w-6 shrink-0 text-method-delete" />
             )}
-            <h2 className="text-lg font-semibold text-foreground">{title}</h2>
+            <h2 className="text-lg font-semibold text-foreground">{resolvedTitle}</h2>
           </div>
           {!isNone && (
             <button
               onClick={onClose}
               className="cursor-pointer rounded p-1 text-muted transition-colors hover:bg-surface-muted hover:text-foreground"
-              aria-label="Close"
+              aria-label={t('close')}
             >
               <X className="h-5 w-5" />
             </button>
@@ -76,7 +80,7 @@ export default function InfoPopup({
             onClick={onClose}
             className={`cursor-pointer rounded px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90 ${isSuccess ? 'bg-method-post' : 'bg-method-delete'}`}
           >
-            {dismissLabel}
+            {resolvedDismiss}
           </button>
         </div>
       </div>

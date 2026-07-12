@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import SectionLabel from './SectionLabel';
 import CodeBlock from './CodeBlock';
 import { buildCurl } from '../utils';
@@ -10,6 +11,7 @@ export default function Curl({ endpoint, baseUrl, values, body }: {
   values: Record<string, string>;
   body?: string;
 }) {
+  const t = useTranslations('viewer');
   const [copied, setCopied] = useState(false);
   const [curl, setCurl] = useState('');
 
@@ -24,9 +26,9 @@ export default function Curl({ endpoint, baseUrl, values, body }: {
       {curl && (
         <div className="w-full flex flex-col gap-1.5">
           <div className="flex items-center justify-between">
-            <SectionLabel>cURL</SectionLabel>
+            <SectionLabel>{t('curl')}</SectionLabel>
             <button type="button" onClick={handleCopy} className="text-xs text-muted transition-colors hover:text-foreground">
-              {copied ? 'Copied!' : 'Copy'}
+              {copied ? t('copied') : t('copy')}
             </button>
           </div>
           <CodeBlock>{curl}</CodeBlock>
@@ -37,7 +39,7 @@ export default function Curl({ endpoint, baseUrl, values, body }: {
         onClick={() => setCurl(buildCurl(endpoint, baseUrl, values, body))}
         className="w-full py-2 block cursor-pointer rounded-md border border-border transition-all hover:bg-border/30"
       >
-        {curl ? 'Regenerate' : 'Generate'} cURL!
+        {curl ? t('regenerateCurl') : t('generateCurl')}
       </button>
     </>
   );

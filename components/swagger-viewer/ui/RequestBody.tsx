@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import SectionLabel from './SectionLabel';
 import SchemaTable from './SchemaTable';
 import type { SchemaField } from '../types';
@@ -11,9 +12,10 @@ export default function RequestBody({
   value?: string;
   onChange?: (v: string) => void;
 }) {
+  const t = useTranslations('viewer');
   return (
     <div className="flex flex-col gap-2">
-      <SectionLabel>Request Body</SectionLabel>
+      <SectionLabel>{t('requestBody')}</SectionLabel>
       <SchemaTable fields={fields} />
       <textarea
         value={value}

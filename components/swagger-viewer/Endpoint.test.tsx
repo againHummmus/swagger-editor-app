@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { screen, fireEvent } from "@testing-library/react";
+import { renderWithIntl as render } from "@/test/intl";
 import EndpointRow from "./Endpoint";
 import type { Endpoint } from "./types";
 

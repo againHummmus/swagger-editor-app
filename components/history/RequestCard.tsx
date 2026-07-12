@@ -1,5 +1,8 @@
+'use client';
+
 import { RequestLog } from '@/app/actions/requestHistory';
 import { Link } from '@/i18n/navigation';
+import { useTranslations } from 'next-intl';
 import { statusColor, formatDuration, formatTimestamp } from './utils';
 import { Locale } from 'use-intl';
 
@@ -10,6 +13,7 @@ export default function RequestCard({
   log: RequestLog;
   locale: Locale;
 }) {
+  const t = useTranslations('history');
   return (
     <li>
       <Link
@@ -25,7 +29,7 @@ export default function RequestCard({
         <span
           className={`text-sm font-semibold tabular-nums ${statusColor(log.status_code)}`}
         >
-          {log.status_code ?? 'Error'}
+          {log.status_code ?? t('error')}
         </span>
         <span className="text-muted w-20 text-right text-sm tabular-nums">
           {formatDuration(log.duration_ms)}

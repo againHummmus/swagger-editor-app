@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import type { ResponseDetail } from '../types';
 import CodeBlock from './CodeBlock';
 import SchemaTable from './SchemaTable';
@@ -18,6 +19,7 @@ export default function Response({ response, statusText, ok, headers, body }: {
   headers?: Record<string, string>;
   body?: string;
 }) {
+  const t = useTranslations('viewer');
   return (
     <li className={`flex flex-col ${statusBadgeClass(response.status)}`}>
       <div className="flex items-center gap-2 p-1">
@@ -26,7 +28,7 @@ export default function Response({ response, statusText, ok, headers, body }: {
         </span>
         {statusText && <span className="text-xs font-semibold">{statusText}</span>}
         {response.description && <span className="text-xs font-bold">{response.description}</span>}
-        {ok === false && <span className="border border-method-delete rounded-full px-2 text-xs font-semibold text-method-delete">Failed</span>}
+        {ok === false && <span className="border border-method-delete rounded-full px-2 text-xs font-semibold text-method-delete">{t('failed')}</span>}
       </div>
       {response.schemaFields && response.schemaFields.length > 0 && (
         <SchemaTable fields={response.schemaFields} />

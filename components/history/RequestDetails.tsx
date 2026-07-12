@@ -1,3 +1,6 @@
+'use client';
+
+import { useTranslations } from 'next-intl';
 import type { RequestLog } from '@/app/actions/requestHistory';
 import {
   formatBytes,
@@ -13,12 +16,13 @@ export default function RequestDetails({
   log: RequestLog;
   locale: string;
 }) {
+  const t = useTranslations('history');
   const rows: { label: string; value: string; className?: string }[] = [
-    { label: 'URL', value: log.url, className: 'break-all' },
-    { label: 'Timestamp', value: formatTimestamp(log.created_at, locale) },
-    { label: 'Duration', value: formatDuration(log.duration_ms), className: 'tabular-nums' },
-    { label: 'Request size', value: formatBytes(log.request_size), className: 'tabular-nums' },
-    { label: 'Response size', value: formatBytes(log.response_size), className: 'tabular-nums' },
+    { label: t('url'), value: log.url, className: 'break-all' },
+    { label: t('timestamp'), value: formatTimestamp(log.created_at, locale) },
+    { label: t('duration'), value: formatDuration(log.duration_ms), className: 'tabular-nums' },
+    { label: t('requestSize'), value: formatBytes(log.request_size), className: 'tabular-nums' },
+    { label: t('responseSize'), value: formatBytes(log.response_size), className: 'tabular-nums' },
   ];
 
   return (
@@ -29,7 +33,7 @@ export default function RequestDetails({
         <span className="font-mono">{log.method.toUpperCase()}</span>
         <span className="min-w-0 flex-1 truncate text-sm lg:text-2xl ">{log.endpoint}</span>
         <span className="tabular-nums">
-          {log.status_code ?? 'Error'}
+          {log.status_code ?? t('error')}
         </span>
       </div>
       <div className="flex flex-col gap-4 p-8">
