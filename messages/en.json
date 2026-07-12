@@ -1,0 +1,143 @@
+{
+  "metadata": {
+    "title": "Swagger Editor",
+    "description": "Design, edit, and document your OpenAPI specifications."
+  },
+  "header": {
+    "logoAlt": "Swagger Editor",
+    "about": "About",
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "history": "History",
+    "signOut": "Sign Out",
+    "changeLanguage": "Change language",
+    "toggleMenu": "Toggle menu"
+  },
+  "serverErrors": {
+    "invalid_credentials": "Invalid email or password",
+    "email_not_confirmed": "Please confirm your email before signing in",
+    "email_address_invalid": "The email address format is invalid",
+    "over_email_send_rate_limit": "Too many registration attempts. Please wait before trying again",
+    "user_repeated_signup": "An account with this email already exists"
+  },
+  "footer": {
+    "copyright": "© 2026 Swagger Editor App.",
+    "about": "About"
+  },
+  "home": {
+    "placeholder": "Home - editor"
+  },
+  "about": {
+    "title": "About",
+    "description": "An analogue of Swagger, for creating, editing, validating, and viewing OpenAPI specifications. The user can work with API documentation, view endpoints, execute requests, generate cURL commands, and view request history.",
+    "course": {
+      "title": "About RS School Course",
+      "description": "RS School is a free course offered by the Rolling Scopes developer community since 2013. Anyone can study at RS School, regardless of age, occupation, or location."
+    },
+    "team": {
+      "title": "Development Team",
+      "Eugene": "Passionate front-end developer and SDET(java, js stack) with a love for creating beautiful and user-friendly web applications."
+    },
+    "technologies": {
+      "title": "Technologies Used"
+    },
+    "resources": {
+      "title": "Resources"
+    }
+  },
+  "popup": {
+    "serverErrorTitle": "Server error",
+    "serverErrorMessage": "Unhandled server error\nPlease try reloading the page\nError details:",
+    "errorTitle": "Error",
+    "dismiss": "Dismiss",
+    "close": "Close",
+    "reload": "Reload",
+    "unhandledServerError": "Unhandled server error: {message}"
+  },
+  "editor": {
+    "convertToYaml": "Convert to YAML",
+    "convertToJson": "Convert to JSON",
+    "validate": "Validate",
+    "validating": "Validating...",
+    "save": "Save",
+    "saving": "Saving...",
+    "valid": "Valid",
+    "invalid": "Invalid",
+    "schemaSaved": "Schema saved",
+    "saveFailed": "Failed to save schema",
+    "cannotConvert": "Cannot convert: {message}"
+  },
+  "viewer": {
+    "noEndpoints": "No endpoints found in this schema.",
+    "requestBody": "Request Body",
+    "responses": "Responses",
+    "result": "Result",
+    "execute": "Execute!",
+    "failed": "Failed",
+    "curl": "cURL",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "generateCurl": "Generate cURL!",
+    "regenerateCurl": "Regenerate cURL!",
+    "error": "Error",
+    "requestFailed": "Request failed"
+  },
+  "history": {
+    "title": "History & Analytics",
+    "empty": "You haven't executed any requests yet!",
+    "goToEditor": "Go to the Editor",
+    "back": "Back to history",
+    "error": "Error",
+    "url": "URL",
+    "timestamp": "Timestamp",
+    "duration": "Duration",
+    "requestSize": "Request size",
+    "responseSize": "Response size"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "The page you’re looking for doesn’t exist or has been moved.",
+    "backHome": "Back home"
+  },
+  "signIn": {
+    "title": "Sign In",
+    "emailLabel": "Email",
+    "emailPlaceholder": "you@example.com",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "submit": "Sign In",
+    "validation": {
+      "emailRequired": "Email is required",
+      "emailInvalid": "Enter a valid email address",
+      "passwordRequired": "Password is required",
+      "passwordMinLength": "At least 8 characters",
+      "passwordLetter": "Must contain at least one letter",
+      "passwordDigit": "Must contain at least one digit",
+      "passwordSpecial": "Must contain at least one special character"
+    }
+  },
+  "signUp": {
+    "title": "Sign Up",
+    "emailLabel": "Email",
+    "emailPlaceholder": "you@example.com",
+    "userNameLabel": "Name",
+    "userNamePlaceholder": "Your name (optional)",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Create a password",
+    "confirmLabel": "Confirm Password",
+    "confirmPlaceholder": "Repeat your password",
+    "submit": "Create Account",
+    "successMessage": "Account created! Please check your email to confirm your account.",
+    "validation": {
+      "emailRequired": "Email is required",
+      "emailInvalid": "Enter a valid email address",
+      "passwordRequired": "Password is required",
+      "passwordMinLength": "At least 8 characters",
+      "passwordLetter": "Must contain at least one letter",
+      "passwordDigit": "Must contain at least one digit",
+      "passwordSpecial": "Must contain at least one special character",
+      "confirmRequired": "Please confirm your password",
+      "confirmMismatch": "Passwords do not match"
+    }
+  }
+}

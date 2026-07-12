@@ -1,0 +1,143 @@
+{
+  "metadata": {
+    "title": "Swagger Editor",
+    "description": "Создавайте, редактируйте и документируйте свои OpenAPI-спецификации."
+  },
+  "header": {
+    "logoAlt": "Swagger Editor",
+    "about": "О проекте",
+    "signIn": "Войти",
+    "signUp": "Регистрация",
+    "history": "История",
+    "signOut": "Выйти",
+    "changeLanguage": "Сменить язык",
+    "toggleMenu": "Открыть меню"
+  },
+  "serverErrors": {
+    "invalid_credentials": "Неверный email или пароль",
+    "email_not_confirmed": "Подтвердите email перед входом",
+    "email_address_invalid": "Неверный формат email адреса",
+    "over_email_send_rate_limit": "Слишком много попыток регистрации. Подождите перед следующей попыткой",
+    "user_repeated_signup": "Аккаунт с таким email уже существует"
+  },
+  "footer": {
+    "copyright": "© 2026 Swagger Editor App.",
+    "about": "О проекте"
+  },
+  "home": {
+    "placeholder": "Редактор Swagger"
+  },
+  "about": {
+    "title": "О проекте",
+    "description": "Аналог Swagger, для создания, редактирования, валидации и просмотра OpenAPI-спецификаций. Пользователь может работать с API-документацией, просматривать эндпоинты, выполнять запросы, генерировать cURL-команды и смотреть историю запросов.",
+    "course": {
+      "title": "О RS School",
+      "description": "RS School — это бесплатные курсы, проводимые сообществом разработчиков The Rolling Scopes с 2013 года. В RS School может учиться каждый, независимо от возраста, профессиональной занятости и места жительства."
+    },
+    "team": {
+      "title": "Команда разработки",
+      "Eugene": "Страстный front-end разработчик и разработчик SDET (java, js stack) с любовью к созданию красивых и удобных для пользователя веб-приложений."
+    },
+    "technologies": {
+      "title": "Используемые технологии"
+    },
+    "resources": {
+      "title": "Ресурсы"
+    }
+  },
+  "popup": {
+    "serverErrorTitle": "Ошибка сервера",
+    "serverErrorMessage": "Необработанная ошибка сервера\nПожалуйста, попробуйте перезагрузить страницу\nДетали ошибки:",
+    "errorTitle": "Ошибка",
+    "dismiss": "Закрыть",
+    "close": "Закрыть",
+    "reload": "Перезагрузить",
+    "unhandledServerError": "Необработанная ошибка сервера: {message}"
+  },
+  "editor": {
+    "convertToYaml": "Конвертировать в YAML",
+    "convertToJson": "Конвертировать в JSON",
+    "validate": "Проверить",
+    "validating": "Проверка...",
+    "save": "Сохранить",
+    "saving": "Сохранение...",
+    "valid": "Валидна",
+    "invalid": "Невалидна",
+    "schemaSaved": "Схема сохранена",
+    "saveFailed": "Не удалось сохранить схему",
+    "cannotConvert": "Не удалось конвертировать: {message}"
+  },
+  "viewer": {
+    "noEndpoints": "В этой схеме нет эндпоинтов.",
+    "requestBody": "Тело запроса",
+    "responses": "Ответы",
+    "result": "Результат",
+    "execute": "Выполнить!",
+    "failed": "Ошибка",
+    "curl": "cURL",
+    "copy": "Копировать",
+    "copied": "Скопировано!",
+    "generateCurl": "Сгенерировать cURL!",
+    "regenerateCurl": "Сгенерировать заново!",
+    "error": "Ошибка",
+    "requestFailed": "Запрос не выполнен"
+  },
+  "history": {
+    "title": "История и аналитика",
+    "empty": "Вы ещё не выполнили ни одного запроса!",
+    "goToEditor": "Перейти в редактор",
+    "back": "Назад к истории",
+    "error": "Ошибка",
+    "url": "URL",
+    "timestamp": "Время",
+    "duration": "Длительность",
+    "requestSize": "Размер запроса",
+    "responseSize": "Размер ответа"
+  },
+  "notFound": {
+    "title": "Страница не найдена",
+    "description": "Страница, которую вы ищете, не существует или была перемещена.",
+    "backHome": "На главную"
+  },
+  "signIn": {
+    "title": "Войти",
+    "emailLabel": "Email",
+    "emailPlaceholder": "you@example.com",
+    "passwordLabel": "Пароль",
+    "passwordPlaceholder": "Введите пароль",
+    "submit": "Войти",
+    "validation": {
+      "emailRequired": "Email обязателен",
+      "emailInvalid": "Введите корректный email",
+      "passwordRequired": "Пароль обязателен",
+      "passwordMinLength": "Минимум 8 символов",
+      "passwordLetter": "Должен содержать хотя бы одну букву",
+      "passwordDigit": "Должен содержать хотя бы одну цифру",
+      "passwordSpecial": "Должен содержать хотя бы один спецсимвол"
+    }
+  },
+  "signUp": {
+    "title": "Регистрация",
+    "emailLabel": "Email",
+    "emailPlaceholder": "you@example.com",
+    "userNameLabel": "Имя",
+    "userNamePlaceholder": "Ваше имя (необязательно)",
+    "passwordLabel": "Пароль",
+    "passwordPlaceholder": "Создайте пароль",
+    "confirmLabel": "Подтвердите пароль",
+    "confirmPlaceholder": "Повторите пароль",
+    "submit": "Создать аккаунт",
+    "successMessage": "Аккаунт создан! Проверьте email, чтобы подтвердить регистрацию.",
+    "validation": {
+      "emailRequired": "Email обязателен",
+      "emailInvalid": "Введите корректный email",
+      "passwordRequired": "Пароль обязателен",
+      "passwordMinLength": "Минимум 8 символов",
+      "passwordLetter": "Должен содержать хотя бы одну букву",
+      "passwordDigit": "Должен содержать хотя бы одну цифру",
+      "passwordSpecial": "Должен содержать хотя бы один спецсимвол",
+      "confirmRequired": "Подтвердите пароль",
+      "confirmMismatch": "Пароли не совпадают"
+    }
+  }
+}
